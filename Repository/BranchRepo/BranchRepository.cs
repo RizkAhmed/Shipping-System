@@ -30,12 +30,12 @@ namespace Shipping_System.Repository.BranchRepo
 
         public List<Branch> GetAll()
         {
-            return _context.Branch.Where(b => b.IsDeleted == false).ToList();
+            return _context.Branch.ToList();
         }
 
         public Branch GetById(int id)
         {
-            return _context.Branch.FirstOrDefault(i => i.Id == id && i.IsDeleted == false)!;
+            return _context.Branch.FirstOrDefault(i => i.Id == id)!;
         }
 
         public void Save()

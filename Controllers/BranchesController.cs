@@ -16,23 +16,13 @@ namespace Shipping_System.Controllers
         }
 
         [Authorize(Permissions.Branches.View)]
-        public IActionResult Index(string word)
+        public IActionResult Index()
         {
             List<Branch> branches;
-            if (string.IsNullOrEmpty(word))
-            {
-                branches = _branchRepository.GetAll();
-            }
-            else
-            {
-                branches = _branchRepository.GetAll().Where(
-                                e => e.Name.ToLower().Contains(word.ToLower())).ToList();
-
-            }
+           branches=_branchRepository.GetAll();
             return View(branches);
 
         }
-
         [Authorize(Permissions.Branches.Create)]
         public IActionResult Create()
         {
@@ -76,11 +66,19 @@ namespace Shipping_System.Controllers
         }
 
         [Authorize(Permissions.Branches.Delete)]
-        public IActionResult Delete(int id)
+        public IActionResult changeState(int id)
         {
-            _branchRepository.Delete(id);
-            _branchRepository.Save();
-            return Content("sucsses");
+            Branch branch = _branchRepository.GetById(id);
+            if (branch == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                branch.IsDeleted = !branch.IsDeleted;
+                _branchRepository.Save();
+                return Ok();
+            }
         }
     }
 }

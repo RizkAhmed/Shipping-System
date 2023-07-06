@@ -1,0 +1,16 @@
+﻿@model Governorate
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<form method="post" asp-action="Edit">
+    @Html.AntiForgeryToken()
+    <input class="form-control" asp-for="Id" hidden="" />
+    <div >
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <input type="submit" value="Save" class="btn btn-primary mt-2"   />
+</form>

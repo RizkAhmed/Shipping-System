@@ -1,17 +1,10 @@
-﻿﻿
-@inject IAuthorizationService AuthorizationService
-@model IEnumerable<Shipping_System.Models.Branch>
-
+﻿@model List<City>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Branches</h1>
-@if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.Create).Result.Succeeded)
-{
-    <a class="btn btn-primary mb-3" asp-action="Create">Create New Branch</a>
-}
-
+<h1>Cities</h1>
+<a asp-action="Create" class="btn btn-primary mb-3">Add New City</a>
 
 <div class="card shadow mb-4 text-center">
     <div class="card-body">
@@ -21,7 +14,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Name </th>
-                        <th>CreationDate</th>        
+                        <th>Shipping Cost</th>
+                        <th>PickUp Cost</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -30,9 +24,10 @@
                     @foreach (var item in Model)
                     {
                         <tr id="@item.Id">
-                            <td>@item.Id</td>
+                            <td>@item.Id </td>
                             <td>@item.Name</td>
-                            <td>@item.CreationDate</td>
+                            <td>@item.ShippingCost</td>
+                            <td>@item.PickUpCost</td>
                             <td>
                                 <label class="switch">
                                     <input id="status_button" onclick="changeStatus(@item.Id)" type="checkbox" @(item.IsDeleted ? "" : "checked")>
@@ -40,7 +35,7 @@
                                 </label>
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-controller="Branches" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                                <a asp-action="Edit" asp-controller="City" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
                             </td>
                         </tr>
                     }
@@ -55,7 +50,7 @@
     <script>
         function changeStatus(id) {
             $.ajax({
-                url: `/Branches/changeState/${id}`,
+                url: `/City/changeState/${id}`,
                 method: 'GET',
                 success: function () {
                 },

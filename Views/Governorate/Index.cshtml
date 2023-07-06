@@ -1,0 +1,65 @@
+﻿@model List<Governorate>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Governorates</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Add New Governrate</a>
+
+<div class="card shadow mb-4 text-center">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name </th>
+                        <th>State</th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="row_@item.Id">
+                            <td>@item.Id </td>
+                            <td>@item.Name</td>
+                            <td>
+                                <label class="switch">
+                                    <input id="switch-@item.Id" onclick="changeStatus(@item.Id)" type="checkbox" @(item.IsDeleted ? "" : "checked")>
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="Governorate" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Governorate" asp-route-id="@item.Id" class="btn btn-outline-success">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function changeStatus(id) {
+                $.ajax({
+                    url: `/Governorate/changeState/${id}`,
+                    method: 'GET',
+                    success: function () {
+                    },
+                    error: function () {
+                    }
+                });
+            
+        }
+    </script>
+}

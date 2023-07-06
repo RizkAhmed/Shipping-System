@@ -1,0 +1,23 @@
+﻿@model List<City>
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@ViewBag.GovName</h1>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>City Name</th>
+        <th>Shipping Cost</th>
+        <th>Pickup Cost</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name </td>
+            <td>@item.ShippingCost</td>
+            <td>@item.PickUpCost</td>
+        </tr>
+    }
+</table>
+<a asp-action="Index" class="btn btn-primary"> Back </a>

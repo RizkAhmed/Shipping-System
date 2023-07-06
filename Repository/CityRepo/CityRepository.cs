@@ -32,7 +32,7 @@ namespace Shipping_System.Repository.CityRepo
 
         public void Edit(City city)
         {
-            _context.Entry(city).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+          _context.Entry(city).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
         public List<City> GetAll()

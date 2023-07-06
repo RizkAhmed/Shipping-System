@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shipping_System.Constants;
 using Shipping_System.Models;
 using Shipping_System.Repository.CityRepo;
 using Shipping_System.Repository.GovernorateRepo;
 
 namespace Shipping_System.Controllers
 {
-    [Authorize(Roles = "Employee, Admin")]
     public class GovernorateController : Controller
     {
         IGovernRepository _governRepository;
@@ -17,48 +17,50 @@ namespace Shipping_System.Controllers
             _cityRepository = cityRepository;
 
         }
+
+        [Authorize(Permissions.Governorate.View)]
         public IActionResult Index(string word)
         {
             List<Governorate> governorates;
-            if (string.IsNullOrEmpty(word))
-            {
-                governorates = _governRepository.GetAll();
-            }
-            else
-            {
-                governorates = _governRepository.GetAll().Where(
-                                e => e.Name.ToLower().Contains(word.ToLower())).ToList();
-            }
+            governorates=_governRepository.GetAll();
             return View(governorates);
         }
+
+        [Authorize(Permissions.Governorate.View)]
         public IActionResult Details(int id)
         {
             var cites = _cityRepository.GetAllCitiesByGovId(id);
             ViewData["GovName"] = _governRepository.GetById(id).Name;
             return View(cites);
         }
+
+        [Authorize(Permissions.Governorate.Create)]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Permissions.Governorate.Create)]
         [HttpPost]
         public IActionResult Create(Governorate governorate)
         {
             if (ModelState.IsValid)
             {
-
                 _governRepository.Add(governorate);
                 _governRepository.Save();
                 return RedirectToAction("Index");
             }
             return View(governorate);
         }
+
+        [Authorize(Permissions.Governorate.Edit)]
         public IActionResult Edit(int id)
         {
             Governorate governorate = _governRepository.GetById(id);
             return View(governorate);
         }
+
+        [Authorize(Permissions.Governorate.Edit)]
         [HttpPost]
         public IActionResult Edit(Governorate governorate)
         {
@@ -72,6 +74,7 @@ namespace Shipping_System.Controllers
         }
 
         //changeState governorate
+        [Authorize(Permissions.Governorate.Delete)]
         public IActionResult changeState(int id)
         {
             Governorate governorate = _governRepository.GetById(id);

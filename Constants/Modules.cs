@@ -6,7 +6,9 @@
         Users,
         Roles,
         Representative,
-        Trader
+        Trader,
+        City,
+        Governorate
     }
 
 }

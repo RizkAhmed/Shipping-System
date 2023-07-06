@@ -6,6 +6,8 @@
         Admin,
         Basic,
         Representative,
-        Trader
+        Trader,
+        City,
+        Governorate
     }
 }

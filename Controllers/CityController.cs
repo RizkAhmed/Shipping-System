@@ -1,48 +1,46 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shipping_System.Constants;
 using Shipping_System.Models;
 using Shipping_System.Repository.CityRepo;
 using Shipping_System.Repository.GovernorateRepo;
 
 namespace Shipping_System.Controllers
 {
-    [Authorize(Roles = "Employee, Admin")]
     public class CityController : Controller
     {
         ICityRepository _cityRepository;
         IGovernRepository _governRepository;
+
         public CityController(ICityRepository cityRepository, IGovernRepository governRepository)
         {
             _cityRepository = cityRepository;
             _governRepository = governRepository;
-
         }
-        public IActionResult Index(string word)
+
+        [Authorize(Permissions.City.View)]
+        public IActionResult Index()
         {
             List<City> cities;
             cities = _cityRepository.GetAll();
 
             return View(cities);
         }
-        public IActionResult Details(int id)
-        {
-            var city = _cityRepository.GetById(id);
-            return View(city);
-        }
+
+        [Authorize(Permissions.City.Create)]
         public IActionResult Create(int id)
         {
             ViewData["GovList"] = _governRepository.GetAll();
-            //ViewData["gov_id"] = _governRepository.GetById(id).Id;
             return View();
         }
 
+        [Authorize(Permissions.City.Create)]
         [HttpPost]
-        public IActionResult Create(City city, int id)
+        public IActionResult Create(City city)
         {
-            //var gov = _governRepository.GetById(id).Id;
             if (ModelState.IsValid)
             {
-                //city.Id = default;
                 _cityRepository.Add(city);
                 _cityRepository.Save();
                 return RedirectToAction("Index");
@@ -50,12 +48,16 @@ namespace Shipping_System.Controllers
             ViewData["GovList"] = _governRepository.GetAll();
             return View(city);
         }
+
+        [Authorize(Permissions.City.Edit)]
         public IActionResult Edit(int id)
         {
             City city = _cityRepository.GetById(id);
             ViewData["GovList"] = _governRepository.GetAll();
             return View(city);
         }
+
+        [Authorize(Permissions.City.Edit)]
         [HttpPost]
         public IActionResult Edit(City city)
         {
@@ -69,6 +71,7 @@ namespace Shipping_System.Controllers
             return View(city);
         }
         //changeState City
+        [Authorize(Permissions.City.Delete)]
         public IActionResult changeState(int id)
         {
             City city = _cityRepository.GetById(id);

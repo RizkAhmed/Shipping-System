@@ -60,5 +60,21 @@
             public const string Edit = "Permissions.Trader.Edit";
             public const string Delete = "Permissions.Trader.Delete";
         }
+
+        public static class City
+        {
+            public const string View = "Permissions.City.View";
+            public const string Create = "Permissions.City.Create";
+            public const string Edit = "Permissions.City.Edit";
+            public const string Delete = "Permissions.City.Delete";
+        }
+
+        public static class Governorate
+        {
+            public const string View = "Permissions.Governorate.View";
+            public const string Create = "Permissions.Governorate.Create";
+            public const string Edit = "Permissions.Governorate.Edit";
+            public const string Delete = "Permissions.Governorate.Delete";
+        }
     }
 }
