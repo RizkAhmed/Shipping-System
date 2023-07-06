@@ -1,0 +1,69 @@
+﻿﻿
+@inject IAuthorizationService AuthorizationService
+@model IEnumerable<Shipping_System.Models.Branch>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.Create).Result.Succeeded)
+{
+    <a asp-action="Create">Create New</a>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDeleted)
+                </td>
+                <td>
+                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.Edit).Result.Succeeded)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+
+                    } |
+                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.View).Result.Succeeded)
+                    {
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+
+
+                    } |
+                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.Delete).Result.Succeeded)
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

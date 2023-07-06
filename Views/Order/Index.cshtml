@@ -1,0 +1,245 @@
+﻿@using Shipping_System.ViewModels
+@model List<OrderReporttWithOrderByStatusDateViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders</h1>
+@if (User.IsInRole("Trader"))
+{
+    <p>
+        <a class="btn btn-outline-primary my-2" asp-action="Create">Create New</a>
+    </p>
+}
+<div class="row my-3 flex-wrap ">
+    <div class="col-md-3 my-1 filter-btn">
+        <button data-orderState="0" onclick="filterOrders(0)" class="btn btn-primary w-100">All</button>
+    </div>
+    @foreach (var item in ViewBag.OrderStates)
+    {
+        <div class="col-md-3 my-1">
+            <button id="@item.Id" onclick="filterOrders(@item.Id)" data-orderState="@item.Id" class="btn btn-primary w-100">@item.Name</button>
+        </div>
+    }
+
+</div>
+
+
+<div class="card shadow mb-4 text-center">
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table class="table table-bordered text-center table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Serial No.</th>
+                        <th>Date</th>
+                        <th>Client Details</th>
+                        <th>Governorate</th>
+                        <th>City</th>
+                        <th>Order Cost</th>
+                        <th>Edit Order</th>
+                        @*            @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
+                        {*@
+                        <th>Edit Status</th>
+                        @*}*@
+
+                        @*
+                        @if (User.IsInRole("Trader"))
+                        {*@
+                        @*                <th>Edit Order</th>
+                        *@
+                        <th>Delete</th>
+                        @*}*@
+                        <th><i class="fa-solid fa-print"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="tableData">
+
+                    @foreach (var item in Model)
+                    {
+                        <tr id="row_@item.Id" style='@(item.Status == "Delivered to the client" ? "background-color: #baf8ba;" : "")'>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                </div>
+                            </td>
+                            <td>@item.Id</td>
+                            <td>@item.Date</td>
+                            <td>
+                                @item.Client<br />
+                                @item.PhoneNumber
+                            </td>
+                            <td>@item.Governorate</td>
+                            <td>@item.City</td>
+                            <td>@item.ShippingPrice</td>
+
+                            @if (item.Status == "New")
+                            {
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+
+                            @*@if (User.IsInRole("Employee") || User.IsInRole("Admin"))
+                        {*@
+                            <td>
+                                <a asp-route-id="@item.Id" asp-action="Status" class="btn btn-primary">Status</a>
+                            </td>
+                            @*}*@
+
+
+                            @*@if (User.IsInRole("Trader"))
+
+
+                        {*@
+
+                            @*                @if (item.Status == "New")
+                        {
+                        <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                        </td>
+                        }
+                        else
+                        {
+                        <td></td>
+                        }*@
+
+                            <td>
+                                <a class="btn btn-danger" onclick="Remove(@item.Id)"><i class="fa-solid fa-trash"></i></a>
+                            </td>
+
+                            @*}*@
+
+                            <td>
+                                <a class="btn btn-info text-white"><i class="fa-solid fa-print"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+</div>
+    </div>
+        </div>
+
+@section Scripts {
+    <script>
+        function filterOrders(orderStateId) {
+
+            var orderStateId = Number(orderStateId);
+            $.ajax({
+                url: `/Order/GetFilteredOrders?orderState=${orderStateId}`,
+                error: function () {
+                    console.log("Error");
+                },
+                success: function (result) {
+                    document.getElementById("tableData").innerHTML = "";
+
+                    for (let i of result) {
+                        let backgroundColor = i.status === "Delivered to the client" ? "background-color: #baf8ba;" : "";
+                        let itemId = i.id;
+                        console.log(i.status)
+                        document.getElementById("tableData").innerHTML +=
+                            `<tr id="row_${i.id}" style="${backgroundColor}">
+                                  <td>                    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    </div>
+                                  </td>
+                                  <td>${i.id} </td>
+                                  <td>${i.date}</td>
+                                  <td>${i.client} </br> ${i.phoneNumber} </td>
+                                  <td>${i.governorate}</td>
+                                  <td>${i.city}</td>
+                                  <td>${i.shippingPrice}</td>
+
+                    
+
+                      <td>
+                          <button id="statusBtn_${i.id}" class="btn btn-primary" onclick="editStatus(${i.id})">Status</button>
+                      </td>
+
+
+                     <td>
+                         ${i.status === "New" ? `<a id="EditBtn_${i.id}" onclick="edit(${i.id})" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>` : ''}
+                     </td>
+
+                     <td>
+                         <a class="btn btn-danger" onclick="Remove(${i.id})"><i class="fa-solid fa-trash"></i></a>
+                     </td>
+                     
+                     <td>
+                         <a class="btn btn-info text-white"><i class="fa-solid fa-print"></i></a>
+                     </td>
+
+
+                    </tr>`
+                    }
+                }
+            });
+
+        }
+
+        function editStatus(id) {
+            // Code to handle the status button click event
+            // You can use AJAX or other techniques to send a request to the server to update the status
+            // Here's an example AJAX request:
+            $.ajax({
+                url: `/Order/Status/${id}`, // Replace with your actual endpoint URL
+                method: 'Get',
+                success: function (response) {
+                    // Handle the success response
+                    window.location.href = `/Order/Status/${id}`;
+
+                },
+                error: function (error) {
+                    // Handle the error response
+                    console.error('Error updating status:', error);
+                }
+            });
+        }
+
+        function edit(id) {
+            $.ajax({
+                url: `/Order/Edit/${id}`, // Replace with your actual endpoint URL
+                method: 'Get',
+                success: function (response) {
+                    // Handle the success response
+                    window.location.href = `/Order/Edit/${id}`;
+                },
+                error: function (error) {
+                    // Handle the error response
+                    console.error('Error updating status:', error);
+                }
+            });
+        }
+
+        function Remove(id) {
+            //ToDO: remove user
+            var row = document.getElementById("row_" + id)
+            console.log(row)
+            if (confirm("Are You Sure To Delete This Order")){
+                $.ajax({
+                    url: `/Order/Delete/${id}`, // Replace with your actual endpoint URL
+                    success: function (response) {
+                        // Handle the success response
+                        //window.location.href = `/Order/Delete/${id}`;
+                        console.log("Delete");
+                        row.remove();
+                    },
+                    error: function (error) {
+                        // Handle the error response
+                        console.error('Error updating status:', error);
+                    }
+                });
+            }
+        }
+    </script>
+}

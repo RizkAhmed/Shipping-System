@@ -1,0 +1,152 @@
+﻿@model Shipping_System.Models.Order
+
+@{
+    ViewData["Title"] = "Edit";
+    SelectList deliverTypes = new SelectList(ViewBag.DeliverTypes, "Id", "Type");
+    SelectList orderTypes = new SelectList(ViewBag.OrderTypes, "Id", "Name");
+    SelectList paymentMethods = new SelectList(ViewBag.PaymentMethods, "Id", "Name");
+    SelectList branches = new SelectList(ViewBag.Branches, "Id", "Name");
+    SelectList governorate = new SelectList(ViewBag.Governorates, "Id", "Name");
+}
+<h1>Edit</h1>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="OrderTypeId" class="control-label"></label>
+        <select class="form-control" asp-for="OrderTypeId" asp-items="orderTypes">
+            <option value="0">----- Select Order Type-------</option>
+        </select>
+        <span asp-validation-for="OrderTypeId" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="ClientName" class="control-label"></label>
+        <input asp-for="ClientName" class="form-control" />
+        <span asp-validation-for="ClientName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ClientPhone1" class="control-label"></label>
+        <input asp-for="ClientPhone1" class="form-control" />
+        <span asp-validation-for="ClientPhone1" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientPhone2" class="control-label"></label>
+        <input asp-for="ClientPhone2" class="form-control" />
+        <span asp-validation-for="ClientPhone2" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientEmailAddress" class="control-label"></label>
+        <input asp-for="ClientEmailAddress" class="form-control" />
+        <span asp-validation-for="ClientEmailAddress" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="ClientGovernorateId" class="control-label"></label>
+        <select id="ClientGovernorateId" class="form-control" asp-for="ClientGovernorateId" asp-items="governorate" onchange="getCitesInGovernrate()">
+            <option value="0">----- Select Client Governorate Type-------</option>
+        </select>
+        <span asp-validation-for="ClientGovernorateId" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="ClientCityId" class="control-label"></label>
+        <select id="ClientCityId" governorate"" class="form-control" asp-for="ClientCityId">
+            <option value="@Model.ClientCityId">@ViewBag.City</option>
+        </select>
+        <span asp-validation-for="ClientCityId" class="text-danger"></span>
+    </div>
+
+
+    @section Scripts{
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        }
+
+        <script src="/lib/jquery/dist/jquery.js"></script>
+
+        <script>
+            function getCitesInGovernrate() {
+                var governrateId = document.getElementById("ClientGovernorateId").value;
+                console.log(governrateId);
+
+                $.ajax({
+                    url: `/Order/getCitesByGovernrate?govId=${governrateId}`,
+                    success: function (result) {
+                        document.getElementById("ClientCityId").innerHTML = "";
+
+                        for (let i of result) {
+                            document.getElementById("ClientCityId").innerHTML +=
+                                `<option value=${i.id}>${i.name}</option>`
+                        }
+                    }
+                });
+            }
+
+            function ToggleVillageName() {
+                var Village_Input = document.getElementById("Village");
+                Village_Input.toggleAttribute("disabled");
+            }
+        </script>
+    }
+
+
+
+
+
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" onclick="ToggleVillageName()" asp-for="DeliverToVillage" /> @Html.DisplayNameFor(model => model.DeliverToVillage)
+        </label>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Village_Street" class="control-label"></label>
+        <input id="Village" asp-for="Village_Street" class="form-control" disabled />
+        <span asp-validation-for="Village_Street" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DeliveryTypeId" class="control-label"></label>
+        <select class="form-control" asp-for="DeliveryTypeId" asp-items="deliverTypes">
+            <option value="0">----- Select Deliver Type-------</option>
+        </select>
+        <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="PaymentMethodId" class="control-label"></label>
+        <select class="form-control" asp-for="PaymentMethodId" asp-items="paymentMethods">
+            <option value="0">----- Select Payment Method-------</option>
+        </select>
+        <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BranchId" class="control-label"></label>
+        <select class="form-control" asp-for="BranchId" asp-items="branches">
+            <option value="0">----- Select Branch-------</option>
+        </select>
+        <span asp-validation-for="BranchId" class="text-danger"></span>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

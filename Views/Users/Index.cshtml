@@ -1,0 +1,92 @@
+﻿@model List<UserViewModel>
+@{
+    ViewData["title"] = "Users";
+    var index = 1;
+}
+<div class="justify-content-between mb-3">
+    <a class="btn btn-primary" asp-action="Create">Add User</a>
+    <a class="btn btn-primary" asp-route-word = "#ALL#" asp-action="Index">Get All</a>
+</div>
+<table class="table ">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Eamil</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Branch</th>
+            <th scope="col">Role</th>
+            <th scope="col">State</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody >
+
+        @foreach (var user in Model)
+        {
+            <tr  id="row_@user.Id" class=@(user.IsDeleted?"bg-light":"")>
+                <th scope="row">@(index++)</th>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Branch.Name</td>
+                <td>@user.Role</td>
+                <td>
+                    @if (user.IsDeleted)
+                    {
+                        <p>Not Active</p>
+                    }
+                    else
+                    {
+                        <p>Active</p>
+
+                    }
+                </td>
+
+                <td class="text-end">
+                    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                    <a class="btn btn-danger" onclick="Remove('@user.Id')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        function Remove(id){
+            //ToDO: remove user
+            var row = document.getElementById("row_" + id)
+
+            bootbox.confirm({
+                message: 'Do you want to delete user? you can restore it again.',
+                buttons: {
+                    confirm: {
+                        label: 'Delete',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-primary'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "POST",
+                            url: `/Users/Delete/${id}`,
+                            dataType: "text",
+                            success: function (response) {
+                                    row.remove();
+                            },
+                            error: function () {
+                                alert("Something happend")
+                            }
+                        });
+                    }
+                    console.log('This was logged in the callback: ' + result);
+                }
+            });
+        }
+    </script>
+}

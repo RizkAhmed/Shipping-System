@@ -1,0 +1,34 @@
+﻿@model PermissionsFormViewModel
+
+@{
+    ViewData["title"] = "Manage Roles";
+}
+
+<form asp-action="ManagePermissions" method="post">
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>@Model.RoleName</h2>
+            Add/Remove Permissions
+        </div>
+        <div class="card-body">
+            <input type="hidden" asp-for="RoleId" />
+
+            @for (int i = 0; i < Model.RoleCalims.Count; i++)
+            {
+                <div class="form-check m-1">
+                    <input type="hidden" asp-for="@Model.RoleCalims[i].DisplayValue" />
+                    <input asp-for="@Model.RoleCalims[i].IsSelected" class="form-check-input" />
+                    <label class="form-check-label" asp-for="@Model.RoleCalims[i].IsSelected">
+                        @Model.RoleCalims[i].DisplayValue
+                    </label>
+
+                </div>
+            }
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btnalert-secondary">Cancel</a>
+        </div>
+    </div>
+</form>

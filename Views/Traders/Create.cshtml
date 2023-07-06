@@ -1,0 +1,98 @@
+﻿@model TraderAndUserViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    SelectList govItem = new SelectList(Model.Governorates, "Id", "Name");
+    SelectList BranchsItem = new SelectList(Model.Branchs, "Id", "Name");
+    SelectList citesList = new SelectList(Model.Cities, "Id", "Name");
+}
+
+<h1>Create Trader</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StoreName" class="control-label"></label>
+                <input asp-for="StoreName" class="form-control" />
+                <span asp-validation-for="StoreName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialPickupCost" class="control-label"></label>
+                <input asp-for="SpecialPickupCost" class="form-control" />
+                <span asp-validation-for="SpecialPickupCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TraderTaxForRejectedOrders" class="control-label"></label>
+                <input asp-for="TraderTaxForRejectedOrders" class="form-control" />
+                <span asp-validation-for="TraderTaxForRejectedOrders" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GoverId" class="control-label"></label>
+                <select class="form-control" asp-for="GoverId" asp-items="govItem">
+                    <option value="0">----- Select Governorate -------</option>
+                </select>
+                <span asp-validation-for="GoverId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BranchId" class="control-label"></label>
+                <select class="form-control" asp-for="BranchId" asp-items="BranchsItem">
+                    <option value="0">----- Select Branch -------</option>
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+                <select class="form-control" asp-for="CityId" asp-items="citesList">
+                    <option value="0">----- Select City -------</option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

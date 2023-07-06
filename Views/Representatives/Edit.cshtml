@@ -1,0 +1,82 @@
+﻿@model RepresentativeGovBranchPercentageViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    SelectList govItem = new SelectList(Model.Governorates, "Id", "Name");
+    SelectList BranchsItem = new SelectList(Model.Branchs, "Id", "Name");
+    SelectList DiscountTypes = new SelectList(Model.DiscountTypes, "Id", "Percentage");
+}
+
+<h1>Edit</h1>
+
+<h4>Representative</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Representatives" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input  asp-for="AppUserId" hidden="" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+                <input  asp-for="Password" hidden=""  />
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompanyPercentageOfOrder" class="control-label"></label>
+                <input asp-for="CompanyPercentageOfOrder" class="form-control" />
+                <span asp-validation-for="CompanyPercentageOfOrder" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GovernorateId" class="control-label"></label>
+                <select class="form-control" asp-for="GovernorateId" asp-items="govItem">
+                    <option value="0">----- Select Governorate-------</option>
+                </select>
+                <span asp-validation-for="GovernorateId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BranchId" class="control-label"></label>
+                <select class="form-control" asp-for="BranchId" asp-items="BranchsItem">
+                    <option value="0">----- Select Branch-------</option>
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountTypeId" class="control-label"></label>
+                <select class="form-control" asp-for="DiscountTypeId" asp-items="DiscountTypes">
+                    <option value="0">----- Select Discount Type-------</option>
+                </select>                
+                <span asp-validation-for="DiscountTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

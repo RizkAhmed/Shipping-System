@@ -1,0 +1,21 @@
+﻿@model List<Order>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@foreach (var order in Model)
+{
+    <div class="card text-center my-3">
+        <div class="card-header">
+            Order No @order.Id
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@order.ClientName</h5>
+            <p class="card-text">@order.ClientCity.Name | @order.ClientGovernorate.Name</p>
+            <a class="btn btn-danger">@order.ShippingPrice EGP</a>
+            <a asp-route-id="@order.Id" asp-action="Status" class="btn btn-primary">Status</a>
+
+        </div>
+
+    </div>
+}

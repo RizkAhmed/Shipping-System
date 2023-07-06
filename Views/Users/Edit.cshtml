@@ -1,0 +1,96 @@
+﻿@model UpdateUserViewModel
+@inject UserManager<ApplicationUser> _userManager;
+
+
+@{
+    ViewData["Title"] = "Edit user";
+    SelectList roleItems = new SelectList(Model.Roles, "Name", "Name");
+    SelectList branchItems = new SelectList(Model.Branches, "Id", "Name");
+}
+
+<h1>Edit user</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            @*<div class="form-check m-1">
+            <input asp-for="IsDeleted" class="form-check-input" />
+            <label class="form-check-label">Not Active</label>
+            </div>*@
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="BranchId" class="control-label"></label>
+                <select asp-for="BranchId" asp-items="branchItems" class="form-control">
+                    <option value="">--Select Branch--</option>
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                @if (
+                    _userManager.IsInRoleAsync(_userManager.FindByEmailAsync(Model.Email).Result,Roles.Representative.ToString()).Result
+                    ||
+                _userManager.IsInRoleAsync(_userManager.FindByEmailAsync(Model.Email).Result, Roles.Trader.ToString()).Result
+
+                )
+                {
+                    <label asp-for="RoleName" class="control-label"></label>
+                    <select asp-for="RoleName" asp-items="roleItems" class="form-control" disabled>
+                        <option value="">--Select Role--</option>
+                    </select>
+                    <select asp-for="RoleName" asp-items="roleItems" class="form-control" hidden>
+                        <option value="" >--Select Role--</option>
+                    </select>
+                }
+                else
+                {
+                    <label asp-for="RoleName" class="control-label"></label>
+                    <select asp-for="RoleName" asp-items="roleItems" class="form-control" >
+                        <option value="">--Select Role--</option>
+                    </select>
+                }
+
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

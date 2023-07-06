@@ -1,0 +1,98 @@
+﻿@model List<IdentityRole>
+@{
+    ViewData["title"] = "Roles";
+    int index = 1;
+
+}
+<h1>Roles</h1>
+
+<partial name="_AddRole" model="new RoleFormViewModel()"></partial>
+<table class="table w-50 p-2">
+    <thead class="bg-opacity-50 bg-secondary ">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody class="bg-light">
+       
+        @foreach (var role in Model)
+        {
+            <tr id="row_@role.Id">
+                <th scope="row">@(index++)</th>
+                <td id="name_@role.Id">@role.Name</td>
+                <td class="text-end">
+                    <a class="btn btn-primary" asp-action="ManagePermissions" asp-route-roleId="@role.Id">Manage</a>
+                    <a class="btn btn-danger" onclick="Remove('@role.Id')">Delete</a>
+                    <a class="btn btn-success" onclick="Rename('@role.Id')">Edit</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function Rename(Rid){
+            var nameField = document.getElementById("name_"+Rid)
+            bootbox.prompt({
+                title: 'Please Enter New Name',
+                centerVertical: true,
+                callback: function (result) {
+                    $.ajax({
+                        url: `/Roles/Edit`,
+                        data: {
+                            id: Rid,
+                            name: result,
+                        },
+                        success: function () {
+                            nameField.innerText=result;
+                        },
+                        erorr: function () {
+
+                        }
+                    });
+                    console.log(result);
+                    console.log(Rid);
+                }
+            });
+        }
+
+        function Remove(id) {
+            //ToDO: remove user
+            var row = document.getElementById("row_" + id)
+
+            bootbox.confirm({
+                message: 'Do you want to delete user? you can restore it again.',
+                buttons: {
+                    confirm: {
+                        label: 'Delete',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-primary'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "POST",
+                            url: `/Roles/Delete/${id}`,
+                            dataType: "text",
+                            success: function (response) {
+                                row.remove();
+                            },
+                            error: function () {
+                                alert("Something happend")
+                            }
+                        });
+                    }
+                    console.log('This was logged in the callback: ' + result);
+                }
+            });
+        }
+    </script>
+}
