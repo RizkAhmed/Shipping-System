@@ -13,7 +13,7 @@ namespace Shipping_System.Models
         public decimal ShippingCost { get; set; }
         [Required(ErrorMessage = "Please enter pick up cost")]
         public decimal PickUpCost { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
         [ForeignKey ("Governorate") ]
         public int GoverId { get; set; }
         public virtual Governorate? Governorate { get; set; }

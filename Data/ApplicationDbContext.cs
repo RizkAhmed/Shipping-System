@@ -49,12 +49,14 @@ namespace Shipping_System.Data
             builder.Entity<Branch>().Property(m => m.IsDeleted).HasDefaultValue(false);
             builder.Entity<Branch>().HasData(new Branch { Id = 1, Name = "Ramsess", CreationDate = DateTime.Now, IsDeleted = false });
             builder.Entity<Branch>().HasData(new Branch { Id = 2, Name = "Maady", CreationDate = DateTime.Now, IsDeleted = false });
-
+            
+            builder.Entity<ApplicationUser>().Property(m => m.creationDate).HasDefaultValueSql("GetDate()");
 
             builder.Entity<Branch>().Property(m => m.CreationDate).HasDefaultValueSql("GetDate()");
             builder.Entity<Order>().Property(m => m.creationDate).HasDefaultValueSql("GetDate()");
 
             builder.Entity<Branch>().Property(m => m.IsDeleted).HasDefaultValue(false);
+            builder.Entity<City>().Property(m => m.IsDeleted).HasDefaultValue(false);
             builder.Entity<Governorate>().Property(m => m.IsDeleted).HasDefaultValue(false);
             builder.Entity<Order>().Property(m => m.IsDeleted).HasDefaultValue(false);
             builder.Entity<Order>().Property(m => m.RepresentativeId).HasDefaultValue("2a8a426c-a4bc-4335-a65d-700166a88e57");

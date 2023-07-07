@@ -11,7 +11,7 @@ namespace Shipping_System.Models
         public string Name { get; set; }
 
         public string Address { get; set; }
-        public DateTime creationDate { get; set; } = DateTime.Now;
+        public DateTime creationDate { get; set; }
         [Required]
         public bool IsDeleted { get; set; } = false;
 

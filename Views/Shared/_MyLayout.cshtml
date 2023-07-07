@@ -187,17 +187,22 @@
                                         Login
                                     </a>
                                 }
-
-                                <a class="dropdown-item" asp-action="Signout" asp-controller="Account" data-toggle="modal" data-target="#logoutModal"></a>
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                    <button type="submit" class="dropdown-item" >
+                                        <i role="button" class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                                @* <a class="dropdown-item" asp-action="Signout" asp-controller="Account" data-toggle="modal" data-target="#logoutModal"></a>
                                 @if (User.Identity.IsAuthenticated == true)
                                 {
 
-                                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
 
-                                        <i role="button" class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </a>
-                                }
+                                <i role="button" class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                                </a>
+                                }*@
                             </div>
                         </li>
 

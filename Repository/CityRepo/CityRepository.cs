@@ -21,6 +21,7 @@ namespace Shipping_System.Repository.CityRepo
         public void Delete(int id)
         {
             City City = GetById(id);
+
             _context.Cities.Remove(City);
 
         }

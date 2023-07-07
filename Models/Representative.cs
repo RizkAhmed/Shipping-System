@@ -27,7 +27,7 @@ namespace Shipping_System.Models
         [ForeignKey("DiscountType")]
         public int DiscountTypeId { get; set; } 
         public DiscountType? DiscountType { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
 
     }
 }

@@ -33,7 +33,7 @@ namespace Shipping_System.Controllers
         [Authorize(Permissions.Users.View)]
         public async Task<IActionResult> Index(string word)
         {
-            var usersFromDb = await _userManager.Users.Include(u=>u.Branch).ToListAsync();
+            var usersFromDb = await _userManager.Users.Include(u => u.Branch).ToListAsync();
             var users = usersFromDb
                 .Select(user => new UserViewModel
                 {
@@ -54,7 +54,7 @@ namespace Shipping_System.Controllers
             }
             else if (string.IsNullOrEmpty(word))
             {
-                users =  users.Where(u => u.IsDeleted == false).ToList();
+                users = users.Where(u => u.IsDeleted == false).ToList();
 
                 return View(users);
             }
@@ -67,11 +67,13 @@ namespace Shipping_System.Controllers
         [Authorize(Permissions.Users.Create)]
         public IActionResult Create()
         {
-            var roles = _roleManager.Roles.Select(r=>new RoleViewModel
-            {
-                Id = r.Id,
-                Name = r.Name
-            }).ToList();
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
             var user = new UserFormViewModel
             {
                 Roles = roles,
@@ -84,16 +86,18 @@ namespace Shipping_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserFormViewModel model)
         {
-            var roles = _roleManager.Roles.Select(r=>new RoleViewModel
-            {
-                Id = r.Id,
-                Name = r.Name
-            }).ToList();
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
             model.Roles = roles;
             model.Branches = _branchRepository.GetAll();
             if (!ModelState.IsValid)
                 return View(model);
-            if ( await _userManager.FindByEmailAsync(model.Email)!= null)
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
                 ModelState.AddModelError("Email", "Email is already exist");
                 return View(model);
@@ -107,10 +111,10 @@ namespace Shipping_System.Controllers
                 Address = model.Address,
                 BranchId = model.BranchId,
             };
-            var result =await _userManager.CreateAsync(user,model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("Role", error.Description);
                     return View(model);
@@ -123,19 +127,21 @@ namespace Shipping_System.Controllers
         }
 
         [Authorize(Permissions.Users.Edit)]
-        public async Task<IActionResult>Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
                 return BadRequest();
-            var user =await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
                 return NotFound();
 
-            var roles =_roleManager.Roles.Select(r => new RoleViewModel
-            {
-                Id = r.Id,
-                Name = r.Name
-            }).ToList();
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
             var model = new UpdateUserViewModel
             {
                 Id = user.Id,
@@ -143,7 +149,7 @@ namespace Shipping_System.Controllers
                 Email = user.Email,
                 Address = user.Address,
                 BranchId = user.BranchId,
-                RoleName =_userManager.GetRolesAsync(user).Result.FirstOrDefault(),
+                RoleName = _userManager.GetRolesAsync(user).Result.FirstOrDefault(),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 Roles = roles,
                 Branches = _branchRepository.GetAll()
@@ -156,11 +162,13 @@ namespace Shipping_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateUserViewModel model)
         {
-            var roles = _roleManager.Roles.Select(r => new RoleViewModel
-            {
-                Id = r.Id,
-                Name = r.Name
-            }).ToList();
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
             model.Roles = roles;
             model.Branches = _branchRepository.GetAll();
 
@@ -171,7 +179,7 @@ namespace Shipping_System.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             var checkUser = await _userManager.FindByEmailAsync(model.Email);
-            if (checkUser != null&&checkUser.Id != model.Id)
+            if (checkUser != null && checkUser.Id != model.Id)
             {
                 ModelState.AddModelError("Email", "Email is already exist");
                 return View(model);
@@ -196,19 +204,19 @@ namespace Shipping_System.Controllers
                     return View(model);
                 }
             }
-            
+
 
             return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Permissions.Users.Delete)]
         [HttpPost]
-        public async Task<IActionResult>Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
                 return BadRequest();
             var user = await _userManager.FindByIdAsync(id);
-            if(user == null)
+            if (user == null)
                 return NotFound();
 
             user.IsDeleted = true;

@@ -35,7 +35,7 @@ namespace Shipping_System.Models
         [Required(ErrorMessage = "Please select branch")]
         public int BranchId { get; set; }
         public virtual Branch? Branch { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
 
         public List<TraderSpecialPriceForCities>? SpecialPriceForCities { get; set; } =
                              new List<TraderSpecialPriceForCities>();

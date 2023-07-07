@@ -64,9 +64,11 @@ namespace Shipping_System.Controllers
         [HttpPost]
         public IActionResult Edit(Governorate governorate)
         {
+            var govFDB =_governRepository.GetById(governorate.Id);
+            govFDB.Name= governorate.Name;
             if (ModelState.IsValid)
             {
-                _governRepository.Edit(governorate);
+                _governRepository.Edit(govFDB);
                 _governRepository.Save();
                 return RedirectToAction("Index");
             }

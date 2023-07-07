@@ -5,6 +5,7 @@ using Shipping_System.Constants;
 using Shipping_System.Models;
 using Shipping_System.Repository.CityRepo;
 using Shipping_System.Repository.GovernorateRepo;
+using System.Security.Policy;
 
 namespace Shipping_System.Controllers
 {
@@ -59,11 +60,23 @@ namespace Shipping_System.Controllers
 
         [Authorize(Permissions.City.Edit)]
         [HttpPost]
-        public IActionResult Edit(City city)
+        public async Task<IActionResult> Edit(City city)
         {
             if (ModelState.IsValid)
             {
-                _cityRepository.Edit(city);
+                // Get the existing city from the database
+                var existingCity = _cityRepository.GetById(city.Id);
+
+                //  assign the IsDeleted property from the existing city
+                city.IsDeleted = existingCity.IsDeleted;
+
+                // Update the other properties of the city
+                existingCity.Name = city.Name;
+                existingCity.ShippingCost = city.ShippingCost;
+                existingCity.PickUpCost = city.PickUpCost;
+                existingCity.GoverId = city.GoverId;
+
+                _cityRepository.Edit(existingCity);
                 _cityRepository.Save();
                 return RedirectToAction("Index");
             }

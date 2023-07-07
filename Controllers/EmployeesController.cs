@@ -61,7 +61,9 @@ namespace Shipping_System.Controllers
         [Authorize(Permissions.Users.Create)]
         public IActionResult Create()
         {
-            var roles = _roleManager.Roles.Select(r => new RoleViewModel
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
             {
                 Id = r.Id,
                 Name = r.Name
@@ -78,7 +80,9 @@ namespace Shipping_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserFormViewModel model)
         {
-            var roles = _roleManager.Roles.Select(r => new RoleViewModel
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
             {
                 Id = r.Id,
                 Name = r.Name
@@ -125,7 +129,9 @@ namespace Shipping_System.Controllers
             if (user == null)
                 return NotFound();
 
-            var roles = _roleManager.Roles.Select(r => new RoleViewModel
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
             {
                 Id = r.Id,
                 Name = r.Name
@@ -150,7 +156,9 @@ namespace Shipping_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateUserViewModel model)
         {
-            var roles = _roleManager.Roles.Select(r => new RoleViewModel
+            var roles = _roleManager.Roles
+                .Where(r => r.Name != "Representative" && r.Name != "Trader")
+                .Select(r => new RoleViewModel
             {
                 Id = r.Id,
                 Name = r.Name

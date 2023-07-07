@@ -223,7 +223,9 @@ namespace Shipping_System.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<DateTime>("creationDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.HasKey("Id");
 
@@ -271,14 +273,14 @@ namespace Shipping_System.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreationDate = new DateTime(2023, 7, 6, 8, 40, 45, 201, DateTimeKind.Local).AddTicks(4042),
+                            CreationDate = new DateTime(2023, 7, 7, 5, 16, 34, 806, DateTimeKind.Local).AddTicks(8997),
                             IsDeleted = false,
                             Name = "Ramsess"
                         },
                         new
                         {
                             Id = 2,
-                            CreationDate = new DateTime(2023, 7, 6, 8, 40, 45, 201, DateTimeKind.Local).AddTicks(4376),
+                            CreationDate = new DateTime(2023, 7, 7, 5, 16, 34, 807, DateTimeKind.Local).AddTicks(1231),
                             IsDeleted = false,
                             Name = "Maady"
                         });
@@ -296,7 +298,9 @@ namespace Shipping_System.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -470,7 +474,7 @@ namespace Shipping_System.Data.Migrations
                     b.Property<string>("RepresentativeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)")
-                        .HasDefaultValue("3");
+                        .HasDefaultValue("2a8a426c-a4bc-4335-a65d-700166a88e57");
 
                     b.Property<decimal>("ShippingPrice")
                         .HasColumnType("decimal(18,2)");
@@ -482,7 +486,6 @@ namespace Shipping_System.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TraderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Village_Street")
@@ -943,9 +946,7 @@ namespace Shipping_System.Data.Migrations
 
                     b.HasOne("Shipping_System.Models.Trader", "Trader")
                         .WithMany()
-                        .HasForeignKey("TraderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TraderId");
 
                     b.Navigation("Branch");
 

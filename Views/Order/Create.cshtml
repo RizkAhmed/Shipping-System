@@ -8,6 +8,7 @@
     SelectList branches = new SelectList(ViewBag.Branches, "Id", "Name");
     SelectList governorate = new SelectList(ViewBag.Governorates, "Id", "Name");
     var OrderNo = (string)ViewBag.OrderNo;
+    var TraderId = (string)ViewBag.TraderId;
 }
 
 <h1>Add New Order</h1>
@@ -203,6 +204,7 @@
 
 
     <input hidden asp-for="OrderNo" value="@OrderNo"/>
+    <input hidden asp-for="TraderId" value="@TraderId" />
     <h4>Order data</h4>
 
     <div class="p-4 border border-5 mb-5 border-dark rounded">
