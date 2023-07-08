@@ -136,30 +136,6 @@
                 {
                     products.push({ ProductNo: i, Name: p_name, Quantity: p_quantity, Price: p_price, Weight: p_weight })
                     console.log(products)
-                    var row = document.createElement("tr")
-
-                    var td_no = document.createElement("td")
-                    td_no.innerHTML = i
-
-                    var td_name = document.createElement("td")
-                    td_name.innerHTML = p_name;
-
-                    var td_price = document.createElement("td")
-                    td_price.innerHTML = p_price;
-
-                    var td_weight = document.createElement("td")
-                    td_weight.innerHTML = p_weight;
-
-                    var td_total = document.createElement("td")
-                    td_total.innerHTML = Number(p_quantity) * Number(p_price);
-
-                    var td_remove = document.createElement("td")
-                    td_remove.innerHTML = `<a class="btn btn-danger" onclick="Remove(${i})">Delete</a>`;
-
-                    var td_quantity = document.createElement("td")
-                    td_quantity.innerHTML = p_quantity;
-                    row.append(td_no, td_name, td_quantity, td_price, td_weight,  td_total, td_remove)
-                    product_table.append(row)
                     $.ajax({
                         url: `/Order/AddProduct`,
                         data: {
@@ -169,21 +145,58 @@
                             weight: p_weight,
                             price: p_price
                         },
-                        success: function () {
+                        success: function (data) {
+                            console.log(data)
+                            var row = document.createElement("tr")
 
+                            var td_no = document.createElement("td")
+                            td_no.innerHTML = i
+
+                            var td_name = document.createElement("td")
+                            td_name.innerHTML = p_name;
+                            var td_price = document.createElement("td")
+                            td_price.innerHTML = p_price;
+
+                            var td_weight = document.createElement("td")
+                            td_weight.innerHTML = p_weight;
+
+                            var td_total = document.createElement("td")
+                            td_total.innerHTML = Number(p_quantity) * Number(p_price);
+
+                            var td_remove = document.createElement("td")
+                            td_remove.innerHTML = `<a class="btn btn-danger" onclick="Remove(${data})">Delete</a>`;
+
+                            var td_quantity = document.createElement("td")
+                            td_quantity.innerHTML = p_quantity;
+                            row.append(td_no, td_name, td_quantity, td_price, td_weight, td_total, td_remove)
+                            row.setAttribute('id',`${data}`);
+                            product_table.append(row)
+
+                            i++;
+
+                            document.getElementById("p_name").value = "";
+                            document.getElementById("p_price").value = null;
+                            document.getElementById("p_quantity").value = null;
+                            document.getElementById("p_weight").value = null;
                         },
-                        erorr: function () {
+                        error: function () {
 
                         }
                     });
-                    i++;
-
-                    document.getElementById("p_name").value="";
-                    document.getElementById("p_price").value = null;
-                    document.getElementById("p_quantity").value = null;
-                    document.getElementById("p_weight").value = null;
+                    
 
                 }
+            }
+            function Remove(id){
+                $.ajax({
+                    url: `/Order/DeleteProduct/${id}`,
+                    success: function (data) {
+                        document.getElementById(`${id}`).remove()
+                    },
+                    error: function () {
+
+                    }
+                });
             }
             function empty(e) {
                 switch (e) {

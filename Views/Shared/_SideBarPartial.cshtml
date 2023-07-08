@@ -25,6 +25,15 @@
             </a>
         </li>
     }
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Representatives.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Representatives" asp-action="Home">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+        </li>
+    }
 
 
     @if (AuthorizationService.AuthorizeAsync(User, Permissions.Roles.View).Result.Succeeded)

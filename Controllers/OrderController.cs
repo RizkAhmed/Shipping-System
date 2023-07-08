@@ -182,9 +182,11 @@ namespace Shipping_System.Controllers
 
             Order order = _orderRepository.GetById(id);
 
-            City city = _cityRepository.GetById(order.ClientCityId);
+            ViewData["City"] = _cityRepository.GetAll().Where(c=>c.GoverId==order.ClientGovernorateId).ToList();
+            order.Products = _productRepository.GetAll().Where(p => p.OrderNO == order.OrderNo).ToList();
+            //City city = _cityRepository.GetById(order.ClientCityId);
 
-            ViewData["City"] = city.Name;
+            //ViewData["City"] = city.Name;
             return View(order);
         }
 
@@ -198,6 +200,7 @@ namespace Shipping_System.Controllers
                 order.TotalWeight = ProductsWeight(order.OrderNo);
                 order.ShippingPrice = _orderRepository.CalculateTotalPrice(order) /*+ ProductsCost(order.OrderNo)*/;
                 order.OrderPrice = order.ShippingPrice + ProductsCost(order.OrderNo);
+                order.Products = _productRepository.GetByOrderNo(order.OrderNo);
                 _orderRepository.Edit(order);
                 _orderRepository.Save();
                 return RedirectToAction("Index");
@@ -338,7 +341,17 @@ namespace Shipping_System.Controllers
             };
             _productRepository.Add(pro);
             _productRepository.Save();
-
+            
+            return Ok(pro.Id);
+        }
+        public IActionResult DeleteProduct(int id)
+        {
+            if (id == null)
+                return BadRequest();
+            var pro = _productRepository.GetById(id);
+            if (pro == null)
+                return NotFound();
+            _productRepository.Delete(id);
             return Ok();
         }
         public decimal ProductsWeight(string orderNO)

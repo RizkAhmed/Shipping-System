@@ -20,7 +20,8 @@ namespace Shipping_System.Repository.ProductRepo
         public void Delete(int id)
         {
             Product product = GetById(id);
-            product.IsDeleted = true;
+            _context.Products.Remove(product);
+            _context.SaveChanges();
 
         }
 
@@ -37,6 +38,7 @@ namespace Shipping_System.Repository.ProductRepo
         public Product GetById(int id)
         {
             return _context.Products.Find(id);
+
         }
 
         public List<Product> GetByOrderNo(string orderNo)

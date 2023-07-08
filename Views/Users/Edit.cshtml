@@ -63,11 +63,9 @@
                 {
                     <label asp-for="RoleName" class="control-label"></label>
                     <select asp-for="RoleName" asp-items="roleItems" class="form-control" disabled>
-                        <option value="">--Select Role--</option>
+                        <option value="">@Model.RoleName</option>
                     </select>
-                    <select asp-for="RoleName" asp-items="roleItems" class="form-control" hidden>
-                        <option value="" >--Select Role--</option>
-                    </select>
+                    <input asp-for="RoleName" hidden value="@Model.RoleName" />
                 }
                 else
                 {

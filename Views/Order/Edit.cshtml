@@ -7,20 +7,92 @@
     SelectList paymentMethods = new SelectList(ViewBag.PaymentMethods, "Id", "Name");
     SelectList branches = new SelectList(ViewBag.Branches, "Id", "Name");
     SelectList governorate = new SelectList(ViewBag.Governorates, "Id", "Name");
+    SelectList city = new SelectList(ViewBag.City, "Id", "Name");
+
+    int index = 0;
 }
 <h1>Edit</h1>
 
 <form asp-action="Edit" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <input hidden asp-for="OrderNo"  />
-    <input hidden asp-for="TraderId"  />
-    <div class="form-group">
+
+    <input hidden asp-for="OrderNo" />
+    <input hidden asp-for="TraderId" />
+
+    <h4>Order type</h4>
+    <div class="form-group p-4 border border-5 border-dark rounded mb-5">
+        <div class="col-4">
+            <label asp-for="OrderTypeId" class="control-label"></label>
+            <select class="form-control" asp-for="OrderTypeId" asp-items="orderTypes">
+                <option value="0">----- Select Order Type-------</option>
+            </select>
+            <span asp-validation-for="OrderTypeId" class="text-danger"></span>
+        </div>
+
+    </div>
+
+
+   @* <div class="form-group">
         <label asp-for="OrderTypeId" class="control-label"></label>
         <select class="form-control" asp-for="OrderTypeId" asp-items="orderTypes">
             <option value="0">----- Select Order Type-------</option>
         </select>
         <span asp-validation-for="OrderTypeId" class="text-danger"></span>
+    </div>*@
+    <h4>Client data</h4>
+    <div class="p-4 border border-5 mb-5 border-dark rounded">
+        <span style="display:flex;flex-direction:row;">
+            <div class="form-group mr-3">
+                <label asp-for="ClientName" class="control-label"></label>
+                <input asp-for="ClientName" class="form-control" />
+                <span asp-validation-for="ClientName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mr-3">
+                <label asp-for="ClientPhone1" class="control-label"></label>
+                <input asp-for="ClientPhone1" class="form-control" />
+                <span asp-validation-for="ClientPhone1" class="text-danger"></span>
+            </div>
+            <div class="form-group mr-3">
+                <label asp-for="ClientPhone2" class="control-label"></label>
+                <input asp-for="ClientPhone2" class="form-control" />
+                <span asp-validation-for="ClientPhone2" class="text-danger"></span>
+            </div>
+            <div class="form-group mr-3">
+                <label asp-for="ClientEmailAddress" class="control-label"></label>
+                <input asp-for="ClientEmailAddress" class="form-control" />
+                <span asp-validation-for="ClientEmailAddress" class="text-danger"></span>
+            </div>
+        </span>
+        <span my-3" style="display:flex;flex-direction:row;">
+            
+            <div class="form-group mr-3">
+                <label asp-for="ClientGovernorateId" class="control-label"></label>
+                <select id="ClientGovernorateId" class="form-control" asp-for="ClientGovernorateId" asp-items="governorate" onchange="getCitesInGovernrate()">
+                    <option value="0">----- Select Client Governorate Type-------</option>
+                </select>
+                <span asp-validation-for="ClientGovernorateId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group mr-3">
+                <label asp-for="ClientCityId" class="control-label"></label>
+                <select id="ClientCityId" asp-for="ClientCityId" asp-items="city" class="form-control">
+                    <option value="0">----- Select Client City -------</option>
+                </select>
+                <span asp-validation-for="ClientCityId" class="text-danger"></span>
+            </div>
+        </span>
+
+
     </div>
+
+
+
+
+
+@*
+
 
 
     <div class="form-group">
@@ -29,7 +101,7 @@
         <span asp-validation-for="ClientName" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+ <div class="form-group">
         <label asp-for="ClientPhone1" class="control-label"></label>
         <input asp-for="ClientPhone1" class="form-control" />
         <span asp-validation-for="ClientPhone1" class="text-danger"></span>
@@ -43,10 +115,10 @@
         <label asp-for="ClientEmailAddress" class="control-label"></label>
         <input asp-for="ClientEmailAddress" class="form-control" />
         <span asp-validation-for="ClientEmailAddress" class="text-danger"></span>
-    </div>
+    </div>*@
 
 
-    <div class="form-group">
+@*    <div class="form-group">
         <label asp-for="ClientGovernorateId" class="control-label"></label>
         <select id="ClientGovernorateId" class="form-control" asp-for="ClientGovernorateId" asp-items="governorate" onchange="getCitesInGovernrate()">
             <option value="0">----- Select Client Governorate Type-------</option>
@@ -57,11 +129,11 @@
 
     <div class="form-group">
         <label asp-for="ClientCityId" class="control-label"></label>
-        <select id="ClientCityId" governorate"" class="form-control" asp-for="ClientCityId">
-            <option value="@Model.ClientCityId">@ViewBag.City</option>
-        </select>
+        <select id="ClientCityId" asp-for="ClientCityId" asp-items="city" class="form-control">
+            <option value="0">----- Select Client City -------</option>
+     </select>
         <span asp-validation-for="ClientCityId" class="text-danger"></span>
-    </div>
+    </div>*@
 
 
     @section Scripts{
@@ -95,13 +167,233 @@
                 Village_Input.toggleAttribute("disabled");
             }
         </script>
+        <script>
+            var products = []
+            var product_table = document.getElementById("product_table")
+            var i = @index+1;
+            function AddProduct(order_no) {
+
+                var p_name = document.getElementById("p_name").value;
+                console.log(p_name)
+                var p_price = document.getElementById("p_price").value;
+                console.log(p_price)
+
+                var p_weight = document.getElementById("p_weight").value;
+                console.log(p_weight)
+
+                var p_quantity = document.getElementById("p_quantity").value;
+                console.log(p_quantity)
+
+                if (empty(p_name) || empty(p_price) || empty(p_weight) || empty(p_quantity)) {
+                    alert("Please enter all product data")
+                }
+                else {
+                    $.ajax({
+                        url: `/Order/AddProduct`,
+                        data: {
+                            orderno: order_no,
+                            name: p_name,
+                            quantity: p_quantity,
+                            weight: p_weight,
+                            price: p_price
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            var row = document.createElement("tr")
+
+                            var td_no = document.createElement("td")
+                            td_no.innerHTML = i
+
+                            var td_name = document.createElement("td")
+                            td_name.innerHTML = p_name;
+
+                            var td_price = document.createElement("td")
+                            td_price.innerHTML = p_price;
+
+                            var td_weight = document.createElement("td")
+                            td_weight.innerHTML = p_weight;
+
+                            var td_total = document.createElement("td")
+                            td_total.innerHTML = Number(p_quantity) * Number(p_price);
+
+                            var td_remove = document.createElement("td")
+                            td_remove.innerHTML = `<a class="btn btn-danger" onclick="Remove(${data})">Delete</a>`;
+
+                            var td_quantity = document.createElement("td")
+                            td_quantity.innerHTML = p_quantity;
+                            row.append(td_no, td_name, td_quantity, td_price, td_weight, td_total, td_remove)
+                            row.setAttribute('id', `${data}`);
+                            product_table.append(row)
+
+                            i++;
+
+                            document.getElementById("p_name").value = "";
+                            document.getElementById("p_price").value = null;
+                            document.getElementById("p_quantity").value = null;
+                            document.getElementById("p_weight").value = null;
+                        },
+                        error: function () {
+
+                        }
+                    });
+
+
+                }
+            }
+            function Remove(id) {
+                $.ajax({
+                    url: `/Order/DeleteProduct/${id}`,
+                    success: function (data) {
+                        document.getElementById(`${id}`).remove()
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+            function empty(e) {
+                switch (e) {
+                    case "":
+                    case 0:
+                    case "0":
+                    case null:
+                    case false:
+                    case undefined:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        </script>
     }
 
 
 
+    <h4>Order data</h4>
+
+    <div class="p-4 border border-5 mb-5 border-dark rounded">
+        <span>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" onclick="ToggleVillageName()" asp-for="DeliverToVillage" /> @Html.DisplayNameFor(model => model.DeliverToVillage)
+                </label>
+            </div>
+
+            <div class="form-group col-4 mb-5">
+                <label asp-for="Village_Street" class="control-label"></label>
+                <input id="Village" asp-for="Village_Street" class="form-control" disabled />
+                <span asp-validation-for="Village_Street" class="text-danger"></span>
+            </div>
+        </span>
+        <span style="display:flex;flex-direction:row;">
+
+            <div class="form-group mr-5">
+                <label asp-for="DeliveryTypeId" class="control-label"></label>
+                <select class="form-control" asp-for="DeliveryTypeId" asp-items="deliverTypes">
+                    <option value="0">----- Select Deliver Type-------</option>
+                </select>
+                <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mr-5">
+                <label asp-for="PaymentMethodId" class="control-label"></label>
+                <select class="form-control" asp-for="PaymentMethodId" asp-items="paymentMethods">
+                    <option value="0">----- Select Payment Method-------</option>
+                </select>
+                <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mr-5">
+                <label asp-for="BranchId" class="control-label"></label>
+                <select class="form-control" asp-for="BranchId" asp-items="branches">
+                    <option value="0">----- Select Branch-------</option>
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+
+        </span>
 
 
-    <div class="form-group form-check">
+    </div>
+
+    <!-- Product section-->
+    <h4>Order product</h4>
+    <div class="p-4 border border-5 my-3 border-dark rounded">
+        <span class="justify-content-between" style="display:flex;flex-direction:row;">
+            <div>
+                <label>Name</label>
+                <input class="form-control" type="text" placeholder="Product name" id="p_name" name="p_name" />
+            </div>
+            <div>
+                <label>Quantity</label>
+                <input class="form-control" type="number" placeholder="Quantity" id="p_quantity" name="p_quantity" />
+            </div>
+            <div>
+                <label>Price</label>
+                <input class="form-control" type="number" placeholder="Price" step="0.1" id="p_price" name="p_price" />
+            </div>
+            <div>
+                <label>Weight</label>
+                <input class="form-control" type="number" placeholder="Weight" id="p_weight" name="p_weight" />
+            </div>
+            <div>
+                <label></label>
+                <a onclick="AddProduct('@Model.OrderNo')" class="btn btn-success form-control">Add Product</a>
+            </div>
+        </span>
+        <br />
+        <hr />
+        <br />
+        <table class="table border border-1">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Weight
+                    </th>
+                    <th>
+                        Total Cost
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="product_table">
+                @foreach(var pro in Model.Products)
+                {
+                    <tr id="@(pro.Id)" >
+                        <td>@(++index)</td>
+                        <td>@pro.Name</td>
+                        <td>@pro.Quantity</td>
+                        <td>@pro.Price</td>
+                        <td>@pro.Weight</td>
+                        <td>@(pro.Price*pro.Quantity)</td>
+                        <td><a class="btn btn-danger" onclick="Remove(@pro.Id)">Delete</a></td>
+                    </tr>
+                }
+                    @*product content*@
+                
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+   @* <div class="form-group form-check">
         <label class="form-check-label">
             <input class="form-check-input" onclick="ToggleVillageName()" asp-for="DeliverToVillage" /> @Html.DisplayNameFor(model => model.DeliverToVillage)
         </label>
@@ -139,7 +431,7 @@
         </select>
         <span asp-validation-for="BranchId" class="text-danger"></span>
     </div>
-
+*@
 
 
 

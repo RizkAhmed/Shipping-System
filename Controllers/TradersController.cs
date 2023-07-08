@@ -189,18 +189,15 @@ namespace Shipping_System.Controllers
                     return View(model);
                 }
             }
-            var trader = new Trader
-            {
-                AppUserId = user.Id,
-                GoverId = model.GoverId,
-                BranchId = model.BranchId,
-                CityId = model.CityId,
-                SpecialPickupCost = model.SpecialPickupCost,
-                StoreName = model.StoreName,
-                TraderTaxForRejectedOrders = model.TraderTaxForRejectedOrders,
-                IsDeleted = model.IsDeleted,
-            };
-            _traderRepository.Edit(trader);
+            var traderFDB = _traderRepository.GetById(model.AppUserId);
+
+            traderFDB.GoverId = model.GoverId;
+            traderFDB.BranchId = model.BranchId;
+            traderFDB.CityId = model.CityId;
+            traderFDB.SpecialPickupCost = model.SpecialPickupCost;
+            traderFDB.StoreName = model.StoreName;
+            traderFDB.TraderTaxForRejectedOrders = model.TraderTaxForRejectedOrders;
+            
             _traderRepository.Save();
             return RedirectToAction(nameof(Index));
         }

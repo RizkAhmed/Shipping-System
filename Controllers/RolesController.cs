@@ -82,7 +82,7 @@ namespace Shipping_System.Controllers
 
             return View(viewModel);
         }
-        [Authorize(Permissions.Users.Edit)]
+        [Authorize(Permissions.Roles.Edit)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManagePermissions(PermissionsFormViewModel model)

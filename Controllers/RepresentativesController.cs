@@ -57,15 +57,6 @@ namespace Shipping_System.Controllers
             List<Order> orders = _orderRepository.GetByRepresentativeId(RepresentativeId);
             return View (orders);
         }
-        //public IActionResult Details(int id)
-        //{
-        //    var rep = _representativeRepostiory.GetById(id);
-        //    rep.Governorate = _governRepository.GetById(rep.GovernorateId);
-        //    rep.Branch = _branchRepository.GetById(rep.BranchId);
-        //    rep.DiscountType = _discountTypeRepository.GetById(rep.DiscountTypeId);
-
-        //    return View(rep);
-        //}
 
         [Authorize(Permissions.Representatives.Create)]
         public async Task<IActionResult> Create()
@@ -198,16 +189,14 @@ namespace Shipping_System.Controllers
                     return View(repViewModel);
                 }
             }
-            var rep = new Representative
-            {
-                AppUserId = repViewModel.AppUserId,
-                CompanyPercentageOfOrder = repViewModel.CompanyPercentageOfOrder,
-                GovernorateId = repViewModel.GovernorateId,
-                BranchId = repViewModel.BranchId,
-                DiscountTypeId = repViewModel.DiscountTypeId,
-                IsDeleted = repViewModel.IsDeleted,
-            };
-            _representativeRepostiory.Edit(rep);
+            var repFDB = _representativeRepostiory.GetById(repViewModel.AppUserId);
+
+
+            repFDB.CompanyPercentageOfOrder = repViewModel.CompanyPercentageOfOrder;
+            repFDB.GovernorateId = repViewModel.GovernorateId;
+            repFDB.BranchId = repViewModel.BranchId;
+            repFDB.DiscountTypeId = repViewModel.DiscountTypeId;
+           
             _representativeRepostiory.Save();
             return RedirectToAction(nameof(Index));
         }

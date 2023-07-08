@@ -3,32 +3,101 @@
 @{
     ViewData["title"] = "Manage Roles";
 }
+<style>
+    /*.check{
+        
+    }
 
+    .check:hover {
+        cursor:pointer;
+    }*/
+
+        .check input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #007bff; /* replace with your desired blue color */
+            border-radius: 3px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .check input[type="checkbox"]:checked {
+                background-color: #007bff; /* replace with your desired blue color */
+                border-color: #007bff; /* replace with your desired blue color */
+            }
+</style>
 <form asp-action="ManagePermissions" method="post">
     <div class="card mt-4">
         <div class="card-header">
             <h2>@Model.RoleName</h2>
             Add/Remove Permissions
         </div>
-        <div class="card-body">
-            <input type="hidden" asp-for="RoleId" />
+        <div class="card shadow mb-4 text-center">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <input type="hidden" asp-for="RoleId" />
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                        <thead >
+                            <tr>
+                                <th >Module Name </th>
+                                <th >View</th>
+                                <th >Create</th>
+                                <th >Update</th>
+                                <th >Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.RoleCalims.Count; i += 4)
+                            {
+                                <tr>
+                                    <td class="fs-3" scope="row">@Model.RoleCalims[i].DisplayValue.Split('.')[1]</td>
+                                    <td>
+                                        <div class="form-check m-1">
+                                            <input type="hidden" asp-for="@Model.RoleCalims[i].DisplayValue" />
+                                            <input type="checkbox" asp-for="@Model.RoleCalims[i].IsSelected" class="form-check-input check custom-checkbox-primary" />
+                                            <label class="form-check-label check" asp-for="@Model.RoleCalims[i].IsSelected">@Model.RoleCalims[i].DisplayValue.Split('.')[2] </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check m-1">
+                                            <input type="hidden" asp-for="@Model.RoleCalims[i+1].DisplayValue" />
+                                            <input type="checkbox" asp-for="@Model.RoleCalims[i+1].IsSelected" class="form-check-input check custom-checkbox-primary" />
+                                            <label class="form-check-label check" asp-for="@Model.RoleCalims[i+1].IsSelected">@Model.RoleCalims[i+1].DisplayValue.Split('.')[2] </label>
+                                        </div>
 
-            @for (int i = 0; i < Model.RoleCalims.Count; i++)
-            {
-                <div class="form-check m-1">
-                    <input type="hidden" asp-for="@Model.RoleCalims[i].DisplayValue" />
-                    <input asp-for="@Model.RoleCalims[i].IsSelected" class="form-check-input" />
-                    <label class="form-check-label" asp-for="@Model.RoleCalims[i].IsSelected">
-                        @Model.RoleCalims[i].DisplayValue
-                    </label>
+                                    </td>
+                                    <td>
+                                        <div class="form-check m-1">
+                                            <input type="hidden" asp-for="@Model.RoleCalims[i+2].DisplayValue" />
+                                            <input type="checkbox" asp-for="@Model.RoleCalims[i+2].IsSelected" class="form-check-input check custom-checkbox-primary" />
+                                            <label class="form-check-label check" asp-for="@Model.RoleCalims[i+2].IsSelected">@Model.RoleCalims[i+2].DisplayValue.Split('.')[2] </label>
+                                        </div>
 
+                                    </td>
+                                    <td>
+                                        <div class="form-check m-1">
+                                            <input type="hidden" asp-for="@Model.RoleCalims[i+3].DisplayValue" />
+                                            <input  type="checkbox" asp-for="@Model.RoleCalims[i+3].IsSelected" class="form-check-input check custom-checkbox-primary" />
+                                            <label class="form-check-label check" asp-for="@Model.RoleCalims[i+3].IsSelected">@Model.RoleCalims[i+3].DisplayValue.Split('.')[2] </label>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-            }
-            <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a asp-action="Index" class="btn btnalert-secondary">Cancel</a>
-        </div>
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btnalert-secondary">Cancel</a>
+    </div>
     </div>
 </form>
