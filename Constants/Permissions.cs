@@ -32,6 +32,30 @@
             public const string Edit = "Permissions.Branches.Edit";
             public const string Delete = "Permissions.Branches.Delete";
         }
+        public static class WeightSetting
+        {
+            public const string View = "Permissions.WeightSetting.View";
+            public const string Create = "Permissions.WeightSetting.Create";
+            public const string Edit = "Permissions.WeightSetting.Edit";
+            public const string Delete = "Permissions.WeightSetting.Delete";
+        }
+        
+
+        public static class TraderStatistics
+        {
+            public const string View = "Permissions.TraderStatistics.View";
+            public const string Create = "Permissions.TraderStatistics.Create";
+            public const string Edit = "Permissions.TraderStatistics.Edit";
+            public const string Delete = "Permissions.TraderStatistics.Delete";
+        }
+
+        public static class Orderes
+        {
+            public const string View = "Permissions.Orderes.View";
+            public const string Create = "Permissions.Orderes.Create";
+            public const string Edit = "Permissions.Orderes.Edit";
+            public const string Delete = "Permissions.Orderes.Delete";
+        }
         public static class Users
         {
             public const string View = "Permissions.Users.View";

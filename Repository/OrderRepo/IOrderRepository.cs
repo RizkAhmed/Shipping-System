@@ -23,9 +23,7 @@ namespace Shipping_System.Repository.OrderRepo
 
         decimal CalculatePriceIfShippingToVillage(Order order);
 
-        decimal GetOrderWeight(Order order);
-
-        decimal CalculatePriceOfOrderTotalWeigth(decimal totalWeight);
+        decimal CalculatePriceWeight(Order order);
 
     }
 }

@@ -6,6 +6,8 @@ using Shipping_System.Models;
 using Shipping_System.Repository.BranchRepo;
 using Shipping_System.Repository.DiscountTypeRepo;
 using Shipping_System.Repository.GovernorateRepo;
+using Shipping_System.Repository.OrderRepo;
+using Shipping_System.Repository.ProductRepo;
 using Shipping_System.Repository.RepresentiveRepo;
 using Shipping_System.ViewModels;
 
@@ -18,13 +20,17 @@ namespace Shipping_System.Controllers
         IDiscountTypeRepository _discountTypeRepository;
         IBranchRepository _branchRepository;
         UserManager<ApplicationUser> _userManager;
+        IOrderRepository _orderRepository;
+        IProductRepository _productRepository;
 
         public RepresentativesController(
             IRepresentativeRepository representativeRepository,
             IGovernRepository governRepository,
             IDiscountTypeRepository discountTypeRepository,
             IBranchRepository branchRepository,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            IOrderRepository orderRepository,
+            IProductRepository productRepository
             )
         {
             _representativeRepostiory = representativeRepository;
@@ -32,12 +38,24 @@ namespace Shipping_System.Controllers
             _branchRepository = branchRepository;
             _userManager = userManager;
             _discountTypeRepository = discountTypeRepository;
+            _orderRepository = orderRepository;
+            _productRepository = productRepository;
+
         }
         [Authorize(Permissions.Representatives.View)]
         public IActionResult Index()
         {
             List<Representative> reps = _representativeRepostiory.GetAll();
             return View(reps);
+        }
+
+        public IActionResult Home()
+        {
+            var username = User.Identity.Name;
+            var user = _userManager.FindByEmailAsync(username).Result;
+            var RepresentativeId = user.Id.ToString();
+            List<Order> orders = _orderRepository.GetByRepresentativeId(RepresentativeId);
+            return View (orders);
         }
         //public IActionResult Details(int id)
         //{
@@ -146,6 +164,7 @@ namespace Shipping_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(RepresentativeGovBranchPercentageViewModel repViewModel)
         {
+            repViewModel.Password = "Dummy123+";
             var user = await _userManager.FindByIdAsync(repViewModel.AppUserId);
             if (user == null)
                 return NotFound();

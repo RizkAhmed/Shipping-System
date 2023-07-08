@@ -273,14 +273,14 @@ namespace Shipping_System.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreationDate = new DateTime(2023, 7, 7, 5, 16, 34, 806, DateTimeKind.Local).AddTicks(8997),
+                            CreationDate = new DateTime(2023, 7, 8, 1, 29, 35, 584, DateTimeKind.Local).AddTicks(9968),
                             IsDeleted = false,
                             Name = "Ramsess"
                         },
                         new
                         {
                             Id = 2,
-                            CreationDate = new DateTime(2023, 7, 7, 5, 16, 34, 807, DateTimeKind.Local).AddTicks(1231),
+                            CreationDate = new DateTime(2023, 7, 8, 1, 29, 35, 585, DateTimeKind.Local).AddTicks(44),
                             IsDeleted = false,
                             Name = "Maady"
                         });
@@ -472,9 +472,7 @@ namespace Shipping_System.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RepresentativeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValue("2a8a426c-a4bc-4335-a65d-700166a88e57");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("ShippingPrice")
                         .HasColumnType("decimal(18,2)");
@@ -486,6 +484,7 @@ namespace Shipping_System.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TraderId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Village_Street")
@@ -549,12 +548,12 @@ namespace Shipping_System.Data.Migrations
                         new
                         {
                             Id = 3,
-                            Name = "Delivered to the representative"
+                            Name = "Delivered to Rep."
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Delivered to the client"
+                            Name = "Delivered to client"
                         },
                         new
                         {
@@ -574,22 +573,22 @@ namespace Shipping_System.Data.Migrations
                         new
                         {
                             Id = 8,
-                            Name = "Canceled by the client"
+                            Name = "Canceled by client"
                         },
                         new
                         {
                             Id = 9,
-                            Name = "Declined but Paid"
+                            Name = "Declined, but Paid"
                         },
                         new
                         {
                             Id = 10,
-                            Name = "Declined but Partially Paid"
+                            Name = "Declined, Partially Paid"
                         },
                         new
                         {
                             Id = 11,
-                            Name = "Declined without Payment"
+                            Name = "Declined, but not Paid"
                         });
                 });
 
@@ -946,7 +945,9 @@ namespace Shipping_System.Data.Migrations
 
                     b.HasOne("Shipping_System.Models.Trader", "Trader")
                         .WithMany()
-                        .HasForeignKey("TraderId");
+                        .HasForeignKey("TraderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Branch");
 

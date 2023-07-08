@@ -16,13 +16,29 @@ namespace Shipping_System.Repository.OrderRepo
 
         public List<Order> GetAll()
         {
-            return _context.Orders.Where(e => e.IsDeleted == false).Include(o => o.Representative)/*.Include(o=>o.ClientGovernorate).Include(o=>o.ClientCity)*/.ToList();
+            return _context.Orders.
+                Where(e => e.IsDeleted == false)
+                .Include(o => o.Representative)
+                .Include(o=>o.ClientGovernorate)
+                .Include(o=>o.ClientCity)
+                .Include(o=>o.OrderState)
+                .Include(o=>o.DeliverType)
+                .Include(o=>o.OrderType)
+                .Include(o=>o.Branch)
+                .ToList();
         }
 
 
         public Order GetById(int id)
         {
-            return _context.Orders.FirstOrDefault(e => e.Id == id && e.IsDeleted == false)!;
+            return _context.Orders
+                .Include(o => o.Representative)
+                .Include(o => o.ClientGovernorate)
+                .Include(o => o.ClientCity)
+                .Include(o => o.OrderState)
+                .Include(o => o.DeliverType)
+                .Include(o => o.OrderType)
+                .Include(o => o.Branch).FirstOrDefault(e => e.Id == id && e.IsDeleted == false)!;
         }
 
         public void Add(Order order)
@@ -58,7 +74,7 @@ namespace Shipping_System.Repository.OrderRepo
 
             Price += CalculatePriceIfShippingToVillage(order);  //Shipping To Village Price
 
-            Price += CalculatePriceOfOrderTotalWeigth(GetOrderWeight(order)); //Total Size Weight
+            Price += CalculatePriceWeight(order); //Total Size Weight
 
             return Price;
         }
@@ -92,24 +108,21 @@ namespace Shipping_System.Repository.OrderRepo
             return shippingToVillagePrice;
         }
 
-        public decimal GetOrderWeight(Order order)
+        public decimal CalculatePriceWeight(Order order)
         {
-            decimal totalOrderWeigth = 0;
-            foreach (var product in order.Products)
+            var defaultWeight = _context.WeightSetting.Select(ws=>ws.DefaultSize).FirstOrDefault();
+            var priceForExtraKilo = _context.WeightSetting.Select(ws => ws.PriceForEachExtraKilo).FirstOrDefault();
+            decimal price = 0;
+
+            if (defaultWeight < order.TotalWeight)
+             price = (order.TotalWeight - defaultWeight) * priceForExtraKilo;
+            else
             {
-                totalOrderWeigth += product.Weight * product.Quantity;
+                price = 0;
             }
-            return totalOrderWeigth;
+            return price;
         }
-        public decimal CalculatePriceOfOrderTotalWeigth(decimal totalWeight)
-        {
-            if (totalWeight > _context.WeightSetting.Select(ws => ws.DefaultSize).FirstOrDefault())
-            {
-                return (totalWeight - _context.WeightSetting.Select(ws => ws.DefaultSize).FirstOrDefault())
-                    * _context.WeightSetting.Select(ws => ws.PriceForEachExtraKilo).FirstOrDefault();
-            }
-            return _context.WeightSetting.Select(ws => ws.DefaultSize).FirstOrDefault();
-        }
+      
 
         public List<Order> GetByOrderState(int stateId)
         {
@@ -120,7 +133,15 @@ namespace Shipping_System.Repository.OrderRepo
 
         public List<Order> GetByRepresentativeId(string represntativeId)
         {
-            return _context.Orders.Include(o => o.ClientCity).Include(o => o.ClientGovernorate).Include(o => o.OrderState).Where(o => o.RepresentativeId == represntativeId && o.OrderStateId == 3).ToList();
+            return _context.Orders.Include(o => o.ClientCity)
+               .Include(o => o.Representative)
+                .Include(o => o.ClientGovernorate)
+                .Include(o => o.ClientCity)
+                .Include(o => o.OrderState)
+                .Include(o => o.DeliverType)
+                .Include(o => o.OrderType)
+                .Include(o => o.Branch)
+                .Where(o => o.RepresentativeId == represntativeId && o.OrderStateId == 3).ToList();
         }
     }
 }

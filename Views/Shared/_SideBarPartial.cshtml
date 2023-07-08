@@ -1,5 +1,6 @@
-﻿﻿﻿
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+﻿@inject IAuthorizationService AuthorizationService
+﻿﻿
+<ul class="navbar-nav l-bg-blue-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-action="Index" asp-controller="Home">
@@ -15,66 +16,97 @@
 
 
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Roles" asp-action="Index">
-            <i class="fa-solid fa-user-tie"></i>
-            <span>Roles</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Users" asp-action="Index">
-            <i class="fa-solid fa-user-tie"></i>
-            <span>Users</span>
-        </a>
-    </li>
-    <!-- Nav Item - Employee -->
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Employees" asp-action="Index">
-            <i class="fa-solid fa-user-tie"></i>
-            <span>Employees</span>
-        </a>
-    </li>
-    <!-- Nav Item - Representative -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Representatives" asp-action="Index">
-            <i class="fa-solid fa-user"></i>
-            <span>Representatives</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Trader -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Traders" asp-action="Index">
-            <i class="fa-solid fa-store"></i>
-            <span>Traders</span>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Governorate" asp-action="Index">
-            <i class="fa-solid fa-building-columns"></i>
-            <span>Governorate</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - City -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="City" asp-action="Index">
-            <i class="fa-solid fa-city"></i>
-            <span>City</span>
-        </a>
-    </li>
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.TraderStatistics.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Traders" asp-action="Home">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+        </li>
+    }
 
 
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Roles.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Roles" asp-action="Index">
+                <i class="fa-solid fa-suitcase-rolling"></i> 
+                <span>Roles</span>
+            </a>
+        </li>
+    }
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Users" asp-action="Index">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Users</span>
+            </a>
+        </li>
+    }
+        <!-- Nav Item - Employee -->
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Employees" asp-action="Index">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Employees</span>
+            </a>
+        </li>
+    }
 
-    <!-- Nav Item - Trader -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Branches" asp-action="Index">
-            <i class="fa fa-location-dot"></i>
-            <span>Branches</span>
-        </a>
-    </li>
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Representatives.View).Result.Succeeded)
+    {
+        <!-- Nav Item - Representative -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Representatives" asp-action="Index">
+                <i class="fa-solid fa-user"></i>
+                <span>Representatives</span>
+            </a>
+        </li>
+    }
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Traders.View).Result.Succeeded)
+    {
+        <!-- Nav Item - Trader -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Traders" asp-action="Index">
+                <i class="fa-solid fa-store"></i>
+                <span>Traders</span>
+            </a>
+        </li>
+    }
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Governorate.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Governorate" asp-action="Index">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Governorate</span>
+            </a>
+        </li>
+    }
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.City.View).Result.Succeeded)
+    {
+        <!-- Nav Item - City -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="City" asp-action="Index">
+                <i class="fa-solid fa-city"></i>
+                <span>City</span>
+            </a>
+        </li>
+    }
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.View).Result.Succeeded)
+    {
+
+        <!-- Nav Item - Trader -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="" asp-controller="Branches" asp-action="Index">
+                <i class="fa fa-location-dot"></i>
+                <span>Branches</span>
+            </a>
+        </li>
+    }
+
     <li class="nav-item">
         <a class="nav-link collapsed" asp-area="" asp-controller="OrderReport" asp-action="Index">
             <i class="fa-solid fa-envelopes-bulk"></i>
@@ -82,85 +114,30 @@
         </a>
     </li>
 
+
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.WeightSetting.View).Result.Succeeded)
+{
     <li class="nav-item">
         <a class="nav-link collapsed" asp-area="" asp-controller="WeightSetting" asp-action="Index">
             <i class="fa-solid fa-weight-scale"></i>
             <span>Weight Setting</span>
         </a>
     </li>
+}
+ 
 
-    <!-- Nav Item - Governorate -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Governorate" asp-action="Index">
-            <i class="fa-solid fa-building-columns"></i>
-            <span>Governorate</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - City -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="City" asp-action="Index">
-            <i class="fa-solid fa-city"></i>
-            <span>City</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Representative -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Representative" asp-action="Index">
-            <i class="fa-solid fa-user"></i>
-            <span>Representatives</span>
-        </a>
-    </li>
-
-
-    <!-- Nav Item - Trader -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Trader" asp-action="Index">
-            <i class="fa-solid fa-store"></i>
-            <span>Traders</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Trader -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="Branches" asp-action="Index">
-            <i class="fa fa-location-dot"></i>
-            <span>Branches</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-area="" asp-controller="OrderReport" asp-action="Index">
-            <i class="fa-solid fa-envelopes-bulk"></i>
-            <span>Order Reports</span>
-        </a>
-    </li>
-
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Order" asp-action="Index">
-            <i class="fa-solid fa-cubes"></i>
-            <span>Orders</span>
-        </a>
-    </li>
-
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Trader" asp-action="Home">
-            <i class="fa-solid fa-cubes"></i>
-            <span>Orders</span>
-        </a>
-    </li>
+ 
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.View).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-controller="Order" asp-action="Index">
+                <i class="fa-solid fa-cubes"></i>
+                <span>Orders</span>
+            </a>
+        </li>
     }
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Order" asp-action="Representative">
-            <i class="fa-solid fa-cubes"></i>
-            <span>Orders</span>
-        </a>
-    </li>
-
-
+    
 
     <!-- Divider -->
     <!-- Heading -->
@@ -174,18 +151,29 @@
             </a>
         </li>
 
+
         <!-- Nav Item - Tables -->
     }
 
     @if (User.Identity.IsAuthenticated == true)
     {
+        ///Rizk hay3mlha
         <li class="nav-item">
-            <a class="nav-link" asp-action="Signout" asp-controller="Account">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Logout</span>
-            </a>
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link" style="border:none;background: none;cursor: pointer;margin: 0;">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
         </li>
     }
+
+@*
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+        <button type="submit" class="dropdown-item">
+            Logout
+        </button>
+    </form>*@
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

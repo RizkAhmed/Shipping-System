@@ -8,7 +8,10 @@
         Representative,
         Trader,
         City,
-        Governorate
+        Governorate,
+        Orderes,
+        WeightSetting,
+        TraderStatistics
     }
 
 }

@@ -14,6 +14,9 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Shipping_System.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Shipping_System.Constants;
+using Shipping_System.Repository.RepresentiveRepo;
 
 namespace Shipping_System.Controllers
 {
@@ -30,6 +33,7 @@ namespace Shipping_System.Controllers
         IProductRepository _productRepository;
         ITraderRepository _traderRepository;
         UserManager<ApplicationUser> _userManager;
+        IRepresentativeRepository  _representativeRepository;
 
 
         public OrderController(IOrderRepository orderRepository,
@@ -42,7 +46,8 @@ namespace Shipping_System.Controllers
             IOrderStateRepository orderStateRepository,
             IProductRepository productRepository,
             ITraderRepository traderRepository,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            IRepresentativeRepository representativeRepository
             )
         {
             _orderRepository = orderRepository;   
@@ -56,29 +61,28 @@ namespace Shipping_System.Controllers
             _productRepository = productRepository;
             _traderRepository = traderRepository;
             _userManager = userManager;
+            _representativeRepository = representativeRepository;
 
         }
+        [Authorize(Permissions.Orderes.View)]
         public IActionResult Index(string word)
         {
-
         List<Order> orders ;
             if (User.IsInRole("Trader"))
             {
-                Claim nameClaim = User.Claims.FirstOrDefault(c => c.Type == "Id");
-                var TraderId = nameClaim.Value;
+                var username = User.Identity.Name;
+                var user = _userManager.FindByEmailAsync(username).Result;
+                ViewBag.TraderId = user.Id.ToString();
 
                 orders = _orderRepository.GetAll();
-                orders = orders.Where(o => o.TraderId == TraderId).ToList();
-
+                orders = orders.Where(o => o.TraderId == user.Id).ToList();
             }
             else
             {
                 orders = _orderRepository.GetAll();
-
             }
 
             List<OrderReporttWithOrderByStatusDateViewModel> ordersViewModel = new List<OrderReporttWithOrderByStatusDateViewModel>();
-            
 
             foreach (var item in orders)
             {
@@ -111,6 +115,19 @@ namespace Shipping_System.Controllers
             Order order = _orderRepository.GetById(id);
             return View(order);
         }
+
+
+        public IActionResult Invoice(int id)
+        {
+            var order = _orderRepository.GetById(id);
+
+            var products = _productRepository.GetByOrderNo(order.OrderNo);
+
+            ViewData["Products"] = products;
+            return View(order);
+        }
+
+        [Authorize(Permissions.Orderes.Create)]
         public IActionResult Create()
         {
             ViewData["DeliverTypes"] = _deliverTypeRepository.GetAll();
@@ -125,6 +142,8 @@ namespace Shipping_System.Controllers
             return View() ;
         }
 
+
+        [Authorize(Permissions.Orderes.Create)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Order order)
@@ -137,7 +156,10 @@ namespace Shipping_System.Controllers
 
             if (ModelState.IsValid)
             {
-                order.ShippingPrice = _orderRepository.CalculateTotalPrice(order) + ProductsCost(order.OrderNo);
+                order.TotalWeight = ProductsWeight(order.OrderNo);
+                order.ShippingPrice = _orderRepository.CalculateTotalPrice(order) /*+ ProductsCost(order.OrderNo)*/;
+                order.OrderPrice = order.ShippingPrice + ProductsCost(order.OrderNo); 
+                order.Products = _productRepository.GetByOrderNo(order.OrderNo);
                 _orderRepository.Add(order);
                 _orderRepository.Save();
                 return RedirectToAction("Index");
@@ -149,7 +171,7 @@ namespace Shipping_System.Controllers
             List<City> cities = _cityRepository.GetAllCitiesByGovId(govId);
             return Json(cities);
         }
-
+        [Authorize(Permissions.Orderes.Edit)]
         public IActionResult Edit(int id)
         {
             ViewData["DeliverTypes"] = _deliverTypeRepository.GetAll();
@@ -157,8 +179,6 @@ namespace Shipping_System.Controllers
             ViewData["PaymentMethods"] = _paymentMethodRepository.GetAll();
             ViewData["Branches"] = _branchRepository.GetAll();
             ViewData["Governorates"] = _ghostRepository.GetAll();
-            
-            
 
             Order order = _orderRepository.GetById(id);
 
@@ -168,31 +188,30 @@ namespace Shipping_System.Controllers
             return View(order);
         }
 
-
+        [Authorize(Permissions.Orderes.Edit)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Order order) 
         {
-
-            var username = User.Identity.Name;
-            var user = _userManager.FindByNameAsync(username);
-            order.TraderId = user.Id.ToString();
             if (ModelState.IsValid)
             {
-                order.ShippingPrice = _orderRepository.CalculateTotalPrice(order);
+                order.TotalWeight = ProductsWeight(order.OrderNo);
+                order.ShippingPrice = _orderRepository.CalculateTotalPrice(order) /*+ ProductsCost(order.OrderNo)*/;
+                order.OrderPrice = order.ShippingPrice + ProductsCost(order.OrderNo);
                 _orderRepository.Edit(order);
                 _orderRepository.Save();
                 return RedirectToAction("Index");
             }
-            ViewData["DeliverTypes"] = _deliverTypeRepository.GetAll();
+
+            ViewData["DeliverTypes"] =  _deliverTypeRepository.GetAll();
             ViewData["OrderTypes"] = _orderTypeRepository.GetAll();
             ViewData["PaymentMethods"] = _paymentMethodRepository.GetAll();
             ViewData["Branches"] = _branchRepository.GetAll();
             ViewData["Governorates"] = _ghostRepository.GetAll();
+
             return View(order);
         }
-
-
+        [Authorize(Permissions.Orderes.Delete)]
         public IActionResult Delete(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -204,11 +223,29 @@ namespace Shipping_System.Controllers
             _orderRepository.Save();
             return Ok();
         }
-
-        public IActionResult Status(int id)
+        public async Task<IActionResult> Status(int id)
         {
             Order order = _orderRepository.GetById(id);
+
+            var representativesInSameCity = _representativeRepository.GetByBranchId(order.BranchId);
+
+            List<RepresentativeGovBranchPercentageViewModel> viewmodels = new List<RepresentativeGovBranchPercentageViewModel>();
+
+            foreach (var item in representativesInSameCity)
+            {
+                var user =await _userManager.FindByIdAsync(item.AppUserId);
+
+                RepresentativeGovBranchPercentageViewModel viewmodel = new RepresentativeGovBranchPercentageViewModel()
+                {
+                    AppUserId = user.Id,
+                    Name = user.Name,
+                };
+                viewmodels.Add(viewmodel);
+            }
+
+
             ViewData["OrderStatus"] = _orderStateRepository.GetStatusForEmployee();
+            ViewData["RepresentativesInSameCity"] = viewmodels;
             return View(order);
         }
 
@@ -224,18 +261,19 @@ namespace Shipping_System.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Representative()
+        public IActionResult LinkOrderToRepresentative(string orderId, string repId)
         {
-            Claim nameClaim = User.Claims.FirstOrDefault(c => c.Type == "Id");
+            var order = _orderRepository.GetById(int.Parse(orderId));
 
-            var username = User.Identity.Name;
-            var user = _userManager.FindByNameAsync(username);
+            order.RepresentativeId = repId;
 
-            var RepresentativeId = user.Id.ToString();
-            List<Order> orders = _orderRepository.GetByRepresentativeId(RepresentativeId);
-            return View("Represnetative", orders);
+            _orderRepository.Save();
 
+            return RedirectToAction("Index","Order");
         }
+
+        //TODO MAke Action Status Specially For Representaive Change State
+    
 
         public IActionResult GetFilteredOrders(int orderState)
         {
@@ -244,8 +282,9 @@ namespace Shipping_System.Controllers
             List<Order> filteredOrders;
             if (User.IsInRole("Trader"))
             {
-                var username = User.Identity.Name;
-                var user = _userManager.FindByNameAsync(username);
+
+                var username = User.Identity.Name;  
+                var user = _userManager.FindByNameAsync(username).Result;
                 var TraderId = user.Id.ToString();
 
                 filteredOrders = _orderRepository.GetAll();
@@ -302,6 +341,18 @@ namespace Shipping_System.Controllers
 
             return Ok();
         }
+        public decimal ProductsWeight(string orderNO)
+        {
+            var orderProducts = _productRepository.GetAll().Where(p => p.OrderNO == orderNO);
+            decimal weight = 0;
+            foreach (var product in orderProducts)
+            {
+                weight += product.Weight * product.Quantity;
+            }
+            return weight;
+
+        }
+
         public decimal ProductsCost(string orderNO)
         {
             var orderProducts = _productRepository.GetAll().Where(p=>p.OrderNO==orderNO);

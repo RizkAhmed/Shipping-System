@@ -49,5 +49,12 @@ namespace Shipping_System.Repository.RepresentativeRepo
         {
             _context.SaveChanges();
         }
+
+        public List<Representative> GetByBranchId(int BranchId)
+        {
+            
+            return _context.Representatives.Where(r=>r.BranchId == BranchId).ToList();
+        }
+    
     }
 }

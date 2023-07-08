@@ -7,9 +7,11 @@ using Shipping_System.Repository.BranchRepo;
 using Shipping_System.Repository.CityRepo;
 using Shipping_System.Repository.GovernorateRepo;
 using Shipping_System.Repository.OrderRepo;
+using Shipping_System.Repository.OrderStateRepo;
 using Shipping_System.Repository.TraderRepo;
 using Shipping_System.ViewModels;
 using Shipping_System.ViewModels.TraderViewModel;
+using System.Security.Claims;
 
 namespace Shipping_System.Controllers
 {
@@ -21,6 +23,7 @@ namespace Shipping_System.Controllers
         IBranchRepository _branchRepository;
         IOrderRepository _orderRepository;
         UserManager<ApplicationUser> _userManager;
+        IOrderStateRepository _orderStateRepository;
 
 
         public TradersController
@@ -30,7 +33,8 @@ namespace Shipping_System.Controllers
             ICityRepository cityRepository,
             IBranchRepository branchRepository,
             IOrderRepository orderRepository,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            IOrderStateRepository orderStateRepository
 
             )
         {
@@ -40,6 +44,7 @@ namespace Shipping_System.Controllers
             _branchRepository = branchRepository;
             _orderRepository = orderRepository;
             _userManager = userManager;
+            _orderStateRepository = orderStateRepository;
         }
 
         [Authorize(Permissions.Traders.View)]
@@ -236,28 +241,39 @@ namespace Shipping_System.Controllers
             _traderRepository.Save();
             return Ok();
         }
+        [Authorize(Permissions.TraderStatistics.View)]
         public IActionResult Home()
         {
-            //Claim nameClaim = User.Claims.FirstOrDefault(c => c.Type == "Id");
-            //var TraderId = int.Parse(nameClaim.Value);
 
-            List<Order> orders = _orderRepository.GetAll().Where(o => o.TraderId == "07f7857d-6375-477f-a595-123054c38133").ToList();
+            //Get User Info
+            var username = User.Identity.Name;
+            var user = _userManager.FindByEmailAsync(username).Result;
+            ViewBag.TraderName = user.Name;
 
-            OrderStatusViewModel orderStatusViewModel = new OrderStatusViewModel();
+            List<Order> orders = _orderRepository.GetAll().Where(o => o.TraderId == user.Id).ToList();
 
-            orderStatusViewModel.NewCount = orders.Where(O => O.OrderStateId == 1).Count();
-            orderStatusViewModel.pendingCount = orders.Where(O => O.OrderStateId == 2).Count();
-            orderStatusViewModel.The_order_has_been_deliveredCount = orders.Where(O => O.OrderStateId == 3).Count();
-            orderStatusViewModel.sent_delivered_handedCount = orders.Where(O => O.OrderStateId == 4).Count();
-            orderStatusViewModel.Can_not_reachCount = orders.Where(O => O.OrderStateId == 5).Count();
-            orderStatusViewModel.postponedCount = orders.Where(O => O.OrderStateId == 6).Count();
-            orderStatusViewModel.Partially_deliveredCount = orders.Where(O => O.OrderStateId == 7).Count();
-            orderStatusViewModel.Canceled_by_ClientCount = orders.Where(O => O.OrderStateId == 8).Count();
-            orderStatusViewModel.Refused_with_paymentCount = orders.Where(O => O.OrderStateId == 9).Count();
-            orderStatusViewModel.Refused_with_part_paymentCount = orders.Where(O => O.OrderStateId == 10).Count();
-            orderStatusViewModel.Rejected_and_not_paidCount = orders.Where(O => O.OrderStateId == 11).Count();
+            List<int> OrderStatusNumbers = new List<int>();
 
-            return View(orderStatusViewModel);
+            foreach (var orderStatus in _orderStateRepository.GetAll())
+            {
+                int count = 0;
+                foreach (var order in orders)
+                {
+                    if(order.OrderStateId == orderStatus.Id)
+                    {
+                        count++;
+                    }
+                }
+                OrderStatusNumbers.Add(count);
+
+            }
+
+
+            ViewBag.OrderStatus = _orderStateRepository.GetAll();
+            ViewBag.OrderStatusNumbers = OrderStatusNumbers;
+
+
+            return View();
 
 
         }

@@ -12,7 +12,8 @@
 
 <form asp-action="Edit" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-
+    <input hidden asp-for="OrderNo"  />
+    <input hidden asp-for="TraderId"  />
     <div class="form-group">
         <label asp-for="OrderTypeId" class="control-label"></label>
         <select class="form-control" asp-for="OrderTypeId" asp-items="orderTypes">

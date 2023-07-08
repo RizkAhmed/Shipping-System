@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Shipping_System.Models.WeightSetting>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Weight Setting</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body text-center">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Default Size</th>
+                        <th>Price For Each Extra Kilogram</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.DefaultSize Kg
+                            </td>
+                            <td>
+                                @item.PriceForEachExtraKilo EGP
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

@@ -21,7 +21,7 @@ namespace Shipping_System.Repository.OrderStateRepo
         //Get OrderStatus for Emp( new - watting - Delivered to the representative)
         public List<OrderState> GetStatusForEmployee()
         {
-            return _context.OrderStates.Where(Os=>Os.Id<4).ToList();
+            return _context.OrderStates.Where(Os=>Os.Id<4& Os.Id>1).ToList();
         }
         public OrderState GetById(int id)
         {

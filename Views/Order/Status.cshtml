@@ -2,6 +2,8 @@
 @{
     SelectList orderstatus = new SelectList(ViewBag.OrderStatus, "Id", "Name");
 
+    SelectList RepresentativesInSameCity = new SelectList(ViewBag.RepresentativesInSameCity, "AppUserId", "Name");
+
 }
 
 <h1>Change Order Status</h1>
@@ -9,17 +11,67 @@
 
     <div class="form-group">
         <label asp-for="OrderStateId" class="control-label"></label>
-
-        <select asp-for="OrderStateId" asp-items="orderstatus" class="form-control" asp-disabled="@(Model.OrderStateId == 3)">
-            </select>
+        <select id="order-status" onchange="ShowAllRepresentative(@Model.Id)" asp-for="OrderStateId" asp-items="orderstatus" class="form-control"  >
+        <option value="0" class="bg-secondary" disabled>New</option>    
+        </select>
             <span asp-validation-for="OrderStateId" class="text-danger"></span>
- 
-        
+            
+        <div id="represntatives-container" class="my-4 d-none">
+            <label class="control-label">Choose a Representative : </label>
+            <select id="represntatives" asp-items="RepresentativesInSameCity" class="form-control">
+                <span asp-validation-for="RepresentativeId" class="text-danger"></span>
+            </select>
+       </div>
     </div>
 
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit"  class="btn btn-primary" onclick="LinkOrderToRepresentative(@Model.Id)">Save</button>
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
+
+@section Scripts {
+
+<script>
+        $(document).ready(function () {
+            var orderStatusDropDownText = $('#order-status option:selected').text();
+
+            if (orderStatusDropDownText == "Delivered to Rep.") {
+                $("#represntatives-container").removeClass('d-none');
+            }
+            else {
+                $("#represntatives-container").addClass('d-none');
+            }
+        });
+
+    function ShowAllRepresentative(id) {
+            var orderStatusDropDownText = $('#order-status option:selected').text();
+
+            if (orderStatusDropDownText == "Delivered to Rep."){
+                $("#represntatives-container").removeClass('d-none');
+            }
+            else{
+                $("#represntatives-container").addClass('d-none');
+
+            }
+
+
+
+
+    }
+            function LinkOrderToRepresentative(orderId){
+                var repId = $("#represntatives").val(); 
+
+                $.ajax({
+                url: `/Order/LinkOrderToRepresentative?orderId=${orderId}&repId=${repId}`,
+                    success: function (response) {
+                    window.location.href = `/Order/Index`;
+                    },
+                    error: function (error) {
+                    }
+                });
+            }
+
+</script>
+}

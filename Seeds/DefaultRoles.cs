@@ -25,9 +25,10 @@ namespace Shipping_System.Seeds
         }
         private static async Task SeedClaimsForTrader(this RoleManager<IdentityRole> roleManager)
         {
-            var representativeRole = await roleManager.FindByNameAsync(Roles.Trader.ToString());
-
-            await roleManager.AddPermissionClaims(representativeRole, Modules.Trader.ToString());
+            var traderRole = await roleManager.FindByNameAsync(Roles.Trader.ToString());
+            
+            await roleManager.AddPermissionClaims(traderRole, Modules.TraderStatistics.ToString());
+            await roleManager.AddPermissionClaims(traderRole, Modules.Orderes.ToString());
 
         }
     }

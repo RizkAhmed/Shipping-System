@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shipping_System.Models
 {
@@ -60,11 +61,12 @@ namespace Shipping_System.Models
         public int BranchId { get; set; }
         public Branch? Branch { get; set; }
 
-        public DateTime creationDate { get; set; } = DateTime.Now;
+        public DateTime creationDate { get; set; } = DateTime.Now.Date;
 
-        public List<Product> Products { get; set; } = new List<Product>();
+        [NotMapped]
+        public virtual List<Product>? Products { get; set; } = new List<Product>();
 
-
+        [Display(Name = "Order State ")]
         [ForeignKey("OrderState")]
         public int OrderStateId { get; set; } = 1;
         public OrderState? OrderState { get; set; }
@@ -72,6 +74,7 @@ namespace Shipping_System.Models
         [ForeignKey("Trader")]
         public string TraderId { get; set; }
         public Trader? Trader { get; set; }
+
 
         [ForeignKey("Representative")]
         public string? RepresentativeId { get; set; }

@@ -7,7 +7,5 @@
         Basic,
         Representative,
         Trader,
-        City,
-        Governorate
     }
 }

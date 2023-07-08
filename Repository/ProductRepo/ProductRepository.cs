@@ -39,6 +39,11 @@ namespace Shipping_System.Repository.ProductRepo
             return _context.Products.Find(id);
         }
 
+        public List<Product> GetByOrderNo(string orderNo)
+        {
+            return _context.Products.Where(p=>p.OrderNO == orderNo).ToList();
+        }
+
         public void Save()
         {
             _context.SaveChanges();

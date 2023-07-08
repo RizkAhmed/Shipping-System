@@ -37,17 +37,23 @@ namespace Shipping_System.ViewModels
             ErrorMessage = "Address must be less than 50 characters")]
         public string Address { get; set; }
 
+        [Display(Name = "Company Percentage Of Order")]
         public decimal CompanyPercentageOfOrder { get; set; }
+
+        [Display(Name = "Governorate")]
 
         [Required(
             ErrorMessage = "Please choose governorate")]
         public int GovernorateId { get; set; }
         public List<Governorate>? Governorates { get; set; } //for drop down list
 
+        [Display(Name = "Branch")]
         [Required(
             ErrorMessage = "Please choose branch")]
         public int BranchId { get; set; }
         public List<Branch>? Branchs { get; set; } //for drop down list
+
+        [Display(Name = "Discount Type")]
         public int DiscountTypeId { get; set; }
         public List<DiscountType>? DiscountTypes { get; set; } //for drop down list
     }
