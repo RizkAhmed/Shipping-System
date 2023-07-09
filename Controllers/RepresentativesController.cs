@@ -236,7 +236,18 @@ namespace Shipping_System.Controllers
             _representativeRepostiory.Save();
             return Ok();
         }
-
+        public ActionResult ChangeStatus(int orderId,int statusId)
+        {
+            if(orderId == null||statusId ==null)
+                return BadRequest();
+            var order = _orderRepository.GetById(orderId);
+            if (order == null)
+                return NotFound();
+            order.OrderStateId = statusId;
+            _orderRepository.Save();
+            order = _orderRepository.GetById(orderId);
+            return Ok(order.OrderState.Name);
+        }
 
     }
 }

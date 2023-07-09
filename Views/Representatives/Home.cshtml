@@ -66,8 +66,8 @@
 </style>
 
 
-    <div class="container">
-        <div class="row">
+<div class="container">
+    <div class="row">
         @foreach (var order in Model)
         {
 
@@ -86,13 +86,13 @@
                                 </a>
                             </div>
                             <div class="bg-white px-4 pb-4 pt-3-5">
-                                <h5 class="card-title h5 living-coral-text">@order.ClientCity.Name</h5>
+                                <h5 id="@order.Id" class="card-title h5 living-coral-text">@order.OrderState.Name</h5>
                                 <hr>
                                 <div class="d-flex justify-content-around living-coral-text">
-                                    <h6 class="card-subtitle font-weight-light">Client Name  </h6>
+                                    <h6  class="card-subtitle font-weight-light">Client Name</h6>
                                     <h6 class="font-small font-weight-light mt-n1">@order.ClientName</h6>
                                 </div>
-                               
+
                                 <hr>
                                 <div class="d-flex justify-content-between pt-2 mt-1 text-center text-uppercase living-coral-text">
                                     <div class="d-flex flex-column">
@@ -105,7 +105,7 @@
                                     </div>
                                     <div class="d-flex flex-column">
                                         <i class="fa-solid fa-arrows-rotate fa-lg mb-3"></i>
-                                        <a asp-action="Status" asp-controller="Order" asp-route-id="@order.Id" class="mb-0">Status</a>
+                                        <a onclick="Change(@order.Id)" class="mb-0">Status</a>
                                     </div>
                                 </div>
                                 <hr>
@@ -127,7 +127,7 @@
                                             </th>
                                             <td class="pb-3 pt-2"><span class="deep-purple-text me-2"> Closed</span> Opens 10 AM</td>
                                         </tr>
-                                      
+
                                     </tbody>
                                 </table>
                             </div>
@@ -137,14 +137,27 @@
                 </section>
 
             </div>
-   
-}
+
+        }
     </div>
 </div>
 
+<style>
+    .bootbox-select select {
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 6px 12px;
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+    }
+</style>
+
 @section Scripts {
 
-<script>
+    <script>
         const cards = document.querySelectorAll('.map-card');
 
         cards.forEach(card => {
@@ -155,6 +168,66 @@
             });
         });
 
-</script> 
+        function Change(orderid) {
+            bootbox.prompt({
+                title: 'This is a prompt with select!',
+                inputType: 'select',
+                inputOptions: [{
+                    text: 'Delivered to client',
+                    value: '4'
+                },
+                {
+                    text: 'Cannot reach',
+                    value: '5'
+                },
+                {
+                    text: 'Postponed',
+                    value: '6'
+                },
+                {
+                    text: 'Partially delivered',
+                    value: '7'
+                }, 
+                {
+                    text: 'Canceled by client',
+                    value: '8'
+                }, 
+                {
+                    text: 'Declined, but Paid',
+                    value: '9'
+                }, 
+                {
+                    text: 'Declined, Partially Paid',
+                    value: '10'
+                }, 
+                {
+                    text: 'Declined, but not Paid',
+                    value: '11'
+                }, 
+                ],
+                callback: function (result) {
+                    console.log(result);
+                    $.ajax({
+                        url: `/Representatives/ChangeStatus`,
+                        data: {
+                            orderId: orderid,
+                            statusId:result,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            $('#' + orderid).text(`${data}`);
+
+                        },
+                        erorr: function () {
+
+                        }
+                    });
+
+                },
+                className: 'bootbox-select'
+            });
+        }
+
+    </script>
 
 }

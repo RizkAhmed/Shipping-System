@@ -141,7 +141,7 @@ namespace Shipping_System.Repository.OrderRepo
                 .Include(o => o.DeliverType)
                 .Include(o => o.OrderType)
                 .Include(o => o.Branch)
-                .Where(o => o.RepresentativeId == represntativeId && o.OrderStateId == 3).ToList();
+                .Where(o => o.RepresentativeId == represntativeId && o.OrderStateId != 4).ToList();
         }
     }
 }
