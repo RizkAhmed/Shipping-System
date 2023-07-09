@@ -3,108 +3,133 @@
     var counter = 0;
     ViewData["title"] = "Invoice";
 }
+<div id="printTable">
+    <h1 class="text-center l-bg-blue-dark bg-opacity-10 mx-4 p-3 text-white rounded rounded-1 ">Invoice</h1>
 
-
-<h1 class="text-center l-bg-blue-dark bg-opacity-10 mx-4 p-3 text-white rounded rounded-1 ">Invoice</h1>
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            Order Date :
-            <strong>@Model.creationDate</strong>
-
-        </div>
-        <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-sm-6">
-                    <h6 class="mb-3">From:</h6>
-                    <div>
-                        <strong>Shipping Company</strong>
-                    </div>
-                    <div>@Model.Branch.Name Branch</div>
-                    <div>71-101 Szczecin, Poland</div>
-                    <div>Email: info@shipping.com</div>
-                    <div>Phone: +48 444 666 3333</div>
-                </div>
-
-                <div class="col-sm-6">
-                    <h6 class="mb-3">To:</h6>
-                    <div>
-                        <strong>@Model.ClientName</strong>
-                    </div>
-                    <div>@Model.ClientCity.Name</div>
-                    <div>@Model.ClientGovernorate.Name</div>
-                    <div>Email: @Model.ClientEmailAddress</div>
-                    <div>Phone: @Model.ClientPhone1</div>
-                </div>
-
-
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Order Date :
+                <strong>@Model.creationDate</strong>
 
             </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <h6 class="mb-3">From:</h6>
+                        <div>
+                            <strong>Shipping Company</strong>
+                        </div>
+                        <div>@Model.Branch.Name &nbsp; Branch</div>
+                        <div>71-101 Szczecin, Poland</div>
+                        <div>Email: info@shipping.com</div>
+                        <div>Phone: +48 444 666 3333</div>
+                    </div>
 
-            <div class="table-responsive-sm">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="center">#</th>
-                            <th>Item</th>
+                    <div class="col-sm-6">
+                        <h6 class="mb-3">To:</h6>
+                        <div>
+                            <strong>@Model.ClientName</strong>
+                        </div>
+                        <div>@Model.ClientCity.Name</div>
+                        <div>@Model.ClientGovernorate.Name</div>
+                        <div>Email: @Model.ClientEmailAddress</div>
+                        <div>Phone: @Model.ClientPhone1</div>
+                    </div>
 
-                            <th class="right">Unit Cost</th>
-                            <th class="center">Qty</th>
-                            <th class="right">Total Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Product product in ViewBag.Products)
-                        {
 
+
+                </div>
+
+                <div class="table-responsive-sm">
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td class="center">@(++counter)</td>
-                                <td class="left">@product.Name</td>
-                                <td class="left">@product.Price</td>
-                                <td class="right">@product.Quantity</td>
-                                <td class="right">@(product.Quantity * product.Price) EGP</td>
+                                <th class="center">#</th>
+                                <th>Item</th>
+
+                                <th class="right">Unit Cost</th>
+                                <th class="center">Qty</th>
+                                <th class="right">Total Price</th>
                             </tr>
-                        }
-
-
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-5">
-                </div>
-
-                <div class="col-lg-4 col-sm-5 ml-auto">
-                    <table class="table table-clear">
+                        </thead>
                         <tbody>
-                            <tr>
-                                <td class="left">
-                                    <strong>Subtotal</strong>
-                                </td>
-                                <td class="right">@(Model.OrderPrice - Model.ShippingPrice) EGP</td>
-                            </tr>
-                            <tr>
-                                <td class="left">
-                                    <strong>Shipping Cost</strong>
-                                </td>
-                                <td class="right">@Model.ShippingPrice EGP</td>
-                            </tr>
-                            <tr>
-                                <td class="left">
-                                    <strong>Total</strong>
-                                </td>
-                                <td class="right">
-                                    <strong>@Model.OrderPrice EGP</strong>
-                                </td>
-                            </tr>
+                            @foreach (Product product in ViewBag.Products)
+                            {
+
+                                <tr>
+                                    <td class="center">@(++counter)</td>
+                                    <td class="left">@product.Name</td>
+                                    <td class="left">@product.Price</td>
+                                    <td class="right">@product.Quantity</td>
+                                    <td class="right">@(product.Quantity * product.Price) EGP</td>
+                                </tr>
+                            }
+
+
+
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-5">
+                    </div>
+
+                    <div class="col-lg-4 col-sm-5 ml-auto">
+                        <table class="table table-clear">
+                            <tbody>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Subtotal</strong>
+                                    </td>
+                                    <td class="right">@(Model.OrderPrice - Model.ShippingPrice) EGP</td>
+                                </tr>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Shipping Cost</strong>
+                                    </td>
+                                    <td class="right">@Model.ShippingPrice EGP</td>
+                                </tr>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="right">
+                                        <strong>@Model.OrderPrice EGP</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
     </div>
 </div>
+<div class="container">
+    <button id="printButton" onclick="print()" class="btn btn-primary ">Print</button>
+</div>
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+        var docPDF = new jsPDF();
+        function print() {
+            var elementHTML = document.querySelector("#printTable");
+            docPDF.html(elementHTML, {
+                callback: function (docPDF) {
+                    docPDF.save('Invoice.pdf');
+                },
+                x: 15,
+                y: 15,
+                width: 170,
+                windowWidth: 650
+            });
+        }
+    </script>
+
+}
