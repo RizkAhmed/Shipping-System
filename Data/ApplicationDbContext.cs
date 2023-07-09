@@ -50,7 +50,7 @@ namespace Shipping_System.Data
             builder.Entity<Branch>().HasData(new Branch { Id = 1, Name = "Ramsess", CreationDate = DateTime.Now, IsDeleted = false });
             builder.Entity<Branch>().HasData(new Branch { Id = 2, Name = "Maady", CreationDate = DateTime.Now, IsDeleted = false });
             
-            builder.Entity<ApplicationUser>().Property(m => m.creationDate).HasDefaultValueSql("GetDate()");
+            //builder.Entity<ApplicationUser>().Property(m => m.creationDate).HasDefaultValueSql("GetDate()");
 
             builder.Entity<Branch>().Property(m => m.CreationDate).HasDefaultValueSql("GetDate()");
             builder.Entity<Order>().Property(m => m.creationDate).HasDefaultValueSql("GetDate()");

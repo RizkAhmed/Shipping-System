@@ -240,32 +240,67 @@ namespace Shipping_System.Controllers
             }
             return Ok();
         }
-        public IActionResult Home(/*int branchId*/)
+        //public IActionResult Home(/*int branchId*/)
+        //{
+        //    var allOrders = (from O in _orderRepository.GetAll()
+        //                     join OS in _orderStateRepository.GetAll()
+        //                     on O.OrderStateId equals OS.Id
+        //                     /*where O.BranchId == branchId*/
+        //                     select new
+        //                     {
+        //                         OrderStateName = OS.Name
+        //                     }).ToList();
+
+        //    OrderStatusViewModel orderStatusViewModel = new OrderStatusViewModel();
+
+        //    orderStatusViewModel.NewCount = allOrders.Where(O => O.OrderStateName == "New").Count();
+        //    orderStatusViewModel.pendingCount = allOrders.Where(O => O.OrderStateName == "Waiting").Count();
+        //    orderStatusViewModel.The_order_has_been_deliveredCount = allOrders.Where(O => O.OrderStateName == "Delivered to Rep.").Count();
+        //    orderStatusViewModel.sent_delivered_handedCount = allOrders.Where(O => O.OrderStateName == "Delivered to client").Count();
+        //    orderStatusViewModel.Can_not_reachCount = allOrders.Where(O => O.OrderStateName == "Cannot reach").Count();
+        //    orderStatusViewModel.postponedCount = allOrders.Where(O => O.OrderStateName == "Postponed").Count();
+        //    orderStatusViewModel.Partially_deliveredCount = allOrders.Where(O => O.OrderStateName == "Partially delivered").Count();
+        //    orderStatusViewModel.Canceled_by_ClientCount = allOrders.Where(O => O.OrderStateName == "Canceled by client").Count();
+        //    orderStatusViewModel.Refused_with_paymentCount = allOrders.Where(O => O.OrderStateName == "Declined, but Paid").Count();
+        //    orderStatusViewModel.Refused_with_part_paymentCount = allOrders.Where(O => O.OrderStateName == "Declined, Partially Paid").Count();
+        //    orderStatusViewModel.Rejected_and_not_paidCount = allOrders.Where(O => O.OrderStateName == "Declined, but not Paid").Count();
+
+        //    return View(orderStatusViewModel);
+
+        //}
+
+        public IActionResult Home()
         {
-            var allOrders = (from O in _orderRepository.GetAll()
-                             join OS in _orderStateRepository.GetAll()
-                             on O.OrderStateId equals OS.Id
-                             /*where O.BranchId == branchId*/
-                             select new
-                             {
-                                 OrderStateName = OS.Name
-                             }).ToList();
 
-            OrderStatusViewModel orderStatusViewModel = new OrderStatusViewModel();
+            //Get User Info
+            var username = User.Identity.Name;
+            var user = _userManager.FindByEmailAsync(username).Result;
+            ViewBag.EmployeeName = user.Name;
 
-            orderStatusViewModel.NewCount = allOrders.Where(O => O.OrderStateName == "New").Count();
-            orderStatusViewModel.pendingCount = allOrders.Where(O => O.OrderStateName == "Waiting").Count();
-            orderStatusViewModel.The_order_has_been_deliveredCount = allOrders.Where(O => O.OrderStateName == "Delivered to the representative").Count();
-            orderStatusViewModel.sent_delivered_handedCount = allOrders.Where(O => O.OrderStateName == "Delivered to the client").Count();
-            orderStatusViewModel.Can_not_reachCount = allOrders.Where(O => O.OrderStateName == "Cannot reach").Count();
-            orderStatusViewModel.postponedCount = allOrders.Where(O => O.OrderStateName == "Postponed").Count();
-            orderStatusViewModel.Partially_deliveredCount = allOrders.Where(O => O.OrderStateName == "Partially delivered").Count();
-            orderStatusViewModel.Canceled_by_ClientCount = allOrders.Where(O => O.OrderStateName == "Canceled by the client").Count();
-            orderStatusViewModel.Refused_with_paymentCount = allOrders.Where(O => O.OrderStateName == "Declined but Paid").Count();
-            orderStatusViewModel.Refused_with_part_paymentCount = allOrders.Where(O => O.OrderStateName == "Declined but Partially Paid").Count();
-            orderStatusViewModel.Rejected_and_not_paidCount = allOrders.Where(O => O.OrderStateName == "Declined without Payment").Count();
+            List<Order> orders = _orderRepository.GetAll();
 
-            return View(orderStatusViewModel);
+            List<int> OrderStatusNumbers = new List<int>();
+
+            foreach (var orderStatus in _orderStateRepository.GetAll())
+            {
+                int count = 0;
+                foreach (var order in orders)
+                {
+                    if (order.OrderStateId == orderStatus.Id)
+                    {
+                        count++;
+                    }
+                }
+                OrderStatusNumbers.Add(count);
+
+            }
+
+
+            ViewBag.OrderStatus = _orderStateRepository.GetAll();
+            ViewBag.OrderStatusNumbers = OrderStatusNumbers;
+
+
+            return View();
 
         }
     }

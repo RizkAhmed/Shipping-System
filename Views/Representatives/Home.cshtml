@@ -8,6 +8,9 @@
         background-color: #f5f7fa;
     }
 
+    a{
+        cursor :pointer;
+    }
     .card.map-card .living-coral {
         background: linear-gradient(to right, #373b44, #4286f4) !important;
         color: #fff;
@@ -168,43 +171,61 @@
             });
         });
 
+
+
+
+
         function Change(orderid) {
+
+            const orderState = $('#' + orderid).text();
+
+            const options = [
+            {
+                text: 'Delivered to Rep.',
+                value: '3'
+            },
+            {
+                text: 'Delivered to client',
+                value: '4'
+            },
+            {
+                text: 'Cannot reach',
+                value: '5'
+            },
+            {
+                text: 'Postponed',
+                value: '6'
+            },
+            {
+                text: 'Partially delivered',
+                value: '7'
+            },
+            {
+                text: 'Canceled by client',
+                value: '8'
+            },
+            {
+                text: 'Declined, but Paid',
+                value: '9'
+            },
+            {
+                text: 'Declined, Partially Paid',
+                value: '10'
+            },
+            {
+                text: 'Declined, but not Paid',
+                value: '11'
+            },
+            ];
+
+            const selectedValue = options.find(option => option.text === orderState)?.value;
+
             bootbox.prompt({
                 title: 'This is a prompt with select!',
                 inputType: 'select',
-                inputOptions: [{
-                    text: 'Delivered to client',
-                    value: '4'
-                },
-                {
-                    text: 'Cannot reach',
-                    value: '5'
-                },
-                {
-                    text: 'Postponed',
-                    value: '6'
-                },
-                {
-                    text: 'Partially delivered',
-                    value: '7'
-                }, 
-                {
-                    text: 'Canceled by client',
-                    value: '8'
-                }, 
-                {
-                    text: 'Declined, but Paid',
-                    value: '9'
-                }, 
-                {
-                    text: 'Declined, Partially Paid',
-                    value: '10'
-                }, 
-                {
-                    text: 'Declined, but not Paid',
-                    value: '11'
-                }, 
-                ],
+                inputOptions: options,
+                value: selectedValue,
+
                 callback: function (result) {
                     console.log(result);
                     $.ajax({
@@ -218,7 +239,7 @@
                             $('#' + orderid).text(`${data}`);
 
                         },
-                        erorr: function () {
+                        error: function () {
 
                         }
                     });

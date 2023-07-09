@@ -1,0 +1,88 @@
+﻿@model List<OrderReporttWithOrderByStatusDateViewModel>
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "OrderReport";
+    SelectList status = new SelectList(ViewBag.status, "Id", "Name");
+    var i = 1;
+}
+
+<h1>Order Report</h1>
+<form asp-controller="Order" asp-action="OrderReport">
+<div class="d-flex mb-3">
+        <div class="col-md-3">
+            <label>Status :</label>
+            <select name="statusId" asp-items="status" class="form-select form-control" aria-label="Default select example">
+                <option value="0">Select Status</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>From :</label>
+            <input name="startDate" class="form-control" type="date">
+        </div>
+
+        <div class="col-md-3">
+            <label>To :</label>
+            <input name="EndDate" class="form-control" type="date">
+        </div>
+        <div class="col-md-3" style="margin-top:32px;">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+</div>
+</form>
+
+<div class="card shadow mb-4 text-center">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Status</th>
+                        <th>Trader</th>
+                        <th>Client</th>
+                        <th>Phone</th>
+                        <th>Governorate</th>
+                        <th>City</th>
+                        <th>Order Price</th>
+                        <th>Order Price Recieved</th>
+                        <th>Shipping Price</th>
+                        <th>Shipping Price Recieved</th>
+                        <th>Company Rate</th>
+                        <th>Date</th>
+
+                    </tr>
+                </thead>
+
+                <tbody id="tableData">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(i++)</td>
+                            <td>@item.Status</td>
+                            <td>@item.Trader</td>
+                            <td>@item.Client</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>@item.Governorate</td>
+                            <td>@item.City</td>
+                            <td>@item.OrderPrice</td>
+                            <td>@item.OrderPriceRecieved</td>
+                            <td>@item.ShippingPrice</td>
+                            <td>@item.ShippingPriceRecived</td>
+                            <td>@item.CompanyRate</td>
+                            <td>@item.Date</td>
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+}

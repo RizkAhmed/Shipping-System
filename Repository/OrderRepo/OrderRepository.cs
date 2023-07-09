@@ -25,6 +25,8 @@ namespace Shipping_System.Repository.OrderRepo
                 .Include(o=>o.DeliverType)
                 .Include(o=>o.OrderType)
                 .Include(o=>o.Branch)
+                .Include(t => t.Trader)
+                .ThenInclude(t=> t.AppUser)
                 .ToList();
         }
 

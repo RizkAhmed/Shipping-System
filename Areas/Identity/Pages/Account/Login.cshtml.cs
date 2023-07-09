@@ -122,9 +122,9 @@ namespace Shipping_System.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     var user = await _userManager.FindByEmailAsync(Input.Email);
                     if (_userManager.IsInRoleAsync(user, Roles.Representative.ToString()).Result)
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Home", "Representatives");
                     if (_userManager.IsInRoleAsync(user, Roles.Trader.ToString()).Result)
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Home", "Traders");
 
                     return RedirectToAction("Index", "Home");
                 }

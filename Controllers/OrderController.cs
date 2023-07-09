@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Shipping_System.Constants;
 using Shipping_System.Repository.RepresentiveRepo;
+using NuGet.Protocol;
 
 namespace Shipping_System.Controllers
 {
@@ -377,5 +378,65 @@ namespace Shipping_System.Controllers
             return cost;
         }
 
-    }
+
+        //public IActionResult OrderReport()
+        //{
+        //    List<Order> orders = _orderRepository.GetAll();
+
+        //    ViewBag.status = _orderStateRepository.GetAll().ToList();
+
+        //    return View(orders);
+        //}
+
+        //[HttpPost]
+        public IActionResult OrderReport(string startDate, string endDate, int statusId)
+        {
+            List<OrderReporttWithOrderByStatusDateViewModel> ordersViewModel = new List<OrderReporttWithOrderByStatusDateViewModel>();
+
+            var orders = _orderRepository.GetAll().ToList();
+
+            foreach (var item in orders)
+            {
+                OrderReporttWithOrderByStatusDateViewModel ordersViewModelItem = new OrderReporttWithOrderByStatusDateViewModel();
+                ordersViewModelItem.SerialNumber = item.Id;
+                ordersViewModelItem.StatusId = item.OrderStateId;
+                ordersViewModelItem.Status = item.OrderState.Name;
+                ordersViewModelItem.Trader = item.Trader.AppUser.Name;
+                ordersViewModelItem.Client = item.ClientName;
+                ordersViewModelItem.PhoneNumber = item.ClientPhone1;
+                ordersViewModelItem.Governorate = item.ClientGovernorate.Name;
+                ordersViewModelItem.City = item.ClientCity.Name;
+                ordersViewModelItem.OrderPrice = item.OrderPrice;
+                ordersViewModelItem.OrderPriceRecieved = item.OrderPriceRecieved;
+                ordersViewModelItem.ShippingPrice = item.ShippingPrice;
+                ordersViewModelItem.ShippingPriceRecived = item.ShippingPriceRecived;
+                ordersViewModelItem.CompanyRate = item.RepresentativeId==null? 0 : (item.Representative.CompanyPercentageOfOrder * ordersViewModelItem.ShippingPrice) / 100;
+                ordersViewModelItem.Date = item.creationDate;
+                ordersViewModel.Add(ordersViewModelItem);
+
+            }
+
+            if (statusId != 0)
+            {
+                ordersViewModel = ordersViewModel.Where(o=>o.StatusId == statusId).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                DateTime start = DateTime.Parse(startDate);
+                DateTime end = DateTime.Parse(endDate).AddDays(1);
+                ordersViewModel = ordersViewModel.Where(o => o.Date >= start && o.Date < end).ToList();
+
+            }
+
+            ViewBag.status = _orderStateRepository.GetAll();
+
+            return View(ordersViewModel);
+        }
+
+
+
+    
+
+}
 }

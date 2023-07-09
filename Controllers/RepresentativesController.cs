@@ -95,6 +95,7 @@ namespace Shipping_System.Controllers
                 PhoneNumber = repViewModel.Phone,
                 Address = repViewModel.Address,
                 BranchId = repViewModel.BranchId,
+                
             };
 
             var result = await _userManager.CreateAsync(user, repViewModel.Password);

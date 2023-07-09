@@ -11,6 +11,7 @@ namespace Shipping_System.ViewModels
         [Display(Name = "Serial Number")]
         public int SerialNumber { get; set; }
 
+        public int StatusId { get; set; }
         public string Status { get; set; }
 
         public string Trader { get; set; }
