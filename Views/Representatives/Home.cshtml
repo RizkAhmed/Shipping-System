@@ -8,9 +8,10 @@
         background-color: #f5f7fa;
     }
 
-    a{
-        cursor :pointer;
+    a {
+        cursor: pointer;
     }
+
     .card.map-card .living-coral {
         background: linear-gradient(to right, #373b44, #4286f4) !important;
         color: #fff;
@@ -74,11 +75,11 @@
         @foreach (var order in Model)
         {
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 @order.Id">
                 <section class="mx-auto my-5" style="max-width: 23rem;">
 
                     <div class="card map-card">
-                        <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
+                        <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 400px">
                             <iframe src="https://maps.google.com/maps?q=${@order.ClientCity.Name}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
                                     style="border:0" allowfullscreen></iframe>
                         </div>
@@ -92,7 +93,7 @@
                                 <h5 id="@order.Id" class="card-title h5 living-coral-text">@order.OrderState.Name</h5>
                                 <hr>
                                 <div class="d-flex justify-content-around living-coral-text">
-                                    <h6  class="card-subtitle font-weight-light">Client Name</h6>
+                                    <h6 class="card-subtitle font-weight-light">Client Name</h6>
                                     <h6 class="font-small font-weight-light mt-n1">@order.ClientName</h6>
                                 </div>
 
@@ -118,17 +119,11 @@
                                             <th scope="row" class="px-0 pb-3 pt-2">
                                                 <i class="fas fa-map-marker-alt living-coral-text"></i>
                                             </th>
-                                            <td class="pb-3 pt-2">
+                                            <td class="pb-5 pt-2" >
                                                 <p class="d-inline">@order.Village_Street, </p>
                                                 <p class="d-inline">@order.ClientCity.Name,</p>
                                                 <p class="d-inline">@order.ClientGovernorate.Name</p>
                                             </td>
-                                        </tr>
-                                        <tr class="mt-2">
-                                            <th scope="row" class="px-0 pb-3 pt-2">
-                                                <i class="far fa-clock living-coral-text"></i>
-                                            </th>
-                                            <td class="pb-3 pt-2"><span class="deep-purple-text me-2"> Closed</span> Opens 10 AM</td>
                                         </tr>
 
                                     </tbody>
@@ -180,42 +175,42 @@
             const orderState = $('#' + orderid).text();
 
             const options = [
-            {
-                text: 'Delivered to Rep.',
-                value: '3'
-            },
-            {
-                text: 'Delivered to client',
-                value: '4'
-            },
-            {
-                text: 'Cannot reach',
-                value: '5'
-            },
-            {
-                text: 'Postponed',
-                value: '6'
-            },
-            {
-                text: 'Partially delivered',
-                value: '7'
-            },
-            {
-                text: 'Canceled by client',
-                value: '8'
-            },
-            {
-                text: 'Declined, but Paid',
-                value: '9'
-            },
-            {
-                text: 'Declined, Partially Paid',
-                value: '10'
-            },
-            {
-                text: 'Declined, but not Paid',
-                value: '11'
-            },
+                {
+                    text: 'Delivered to Rep.',
+                    value: '3'
+                },
+                {
+                    text: 'Delivered to client',
+                    value: '4'
+                },
+                {
+                    text: 'Cannot reach',
+                    value: '5'
+                },
+                {
+                    text: 'Postponed',
+                    value: '6'
+                },
+                {
+                    text: 'Partially delivered',
+                    value: '7'
+                },
+                {
+                    text: 'Canceled by client',
+                    value: '8'
+                },
+                {
+                    text: 'Declined, but Paid',
+                    value: '9'
+                },
+                {
+                    text: 'Declined, Partially Paid',
+                    value: '10'
+                },
+                {
+                    text: 'Declined, but not Paid',
+                    value: '11'
+                },
             ];
 
             const selectedValue = options.find(option => option.text === orderState)?.value;
@@ -232,12 +227,15 @@
                         url: `/Representatives/ChangeStatus`,
                         data: {
                             orderId: orderid,
-                            statusId:result,
+                            statusId: result,
                         },
                         success: function (data) {
                             console.log(data)
+                            console.log(result)
                             $('#' + orderid).text(`${data}`);
-
+                            if(result==4){
+                              $('.' + orderid).remove();
+                            }
                         },
                         error: function () {
 

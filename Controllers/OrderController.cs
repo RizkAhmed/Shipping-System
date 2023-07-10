@@ -109,7 +109,7 @@ namespace Shipping_System.Controllers
 
             return View(ordersViewModel);
         }
-
+        [Authorize(Permissions.Orderes.View)]
         public IActionResult Details(int id)
         {
 
@@ -252,7 +252,7 @@ namespace Shipping_System.Controllers
             ViewData["RepresentativesInSameCity"] = viewmodels;
             return View(order);
         }
-
+        [Authorize(Permissions.Orderes.Edit)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Status(Order order)
@@ -265,6 +265,7 @@ namespace Shipping_System.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Permissions.Orderes.Edit)]
         public IActionResult LinkOrderToRepresentative(string orderId, string repId)
         {
             var order = _orderRepository.GetById(int.Parse(orderId));
@@ -276,9 +277,8 @@ namespace Shipping_System.Controllers
             return RedirectToAction("Index","Order");
         }
 
-        //TODO MAke Action Status Specially For Representaive Change State
-    
 
+        [Authorize(Permissions.Orderes.View)]
         public IActionResult GetFilteredOrders(int orderState)
         {
             List<OrderReporttWithOrderByStatusDateViewModel> filteredOrdersViewModel = 
@@ -330,6 +330,7 @@ namespace Shipping_System.Controllers
 
             return Json(filteredOrdersViewModel);
         }
+        [Authorize(Permissions.Orderes.Create)]
         public IActionResult AddProduct(string name, int quantity, decimal weight, decimal price, string orderno)
         {
             var pro = new Product
@@ -345,6 +346,7 @@ namespace Shipping_System.Controllers
             
             return Ok(pro.Id);
         }
+        [Authorize(Permissions.Orderes.Create)]
         public IActionResult DeleteProduct(int id)
         {
             if (id == null)
@@ -366,7 +368,6 @@ namespace Shipping_System.Controllers
             return weight;
 
         }
-
         public decimal ProductsCost(string orderNO)
         {
             var orderProducts = _productRepository.GetAll().Where(p=>p.OrderNO==orderNO);
@@ -379,16 +380,8 @@ namespace Shipping_System.Controllers
         }
 
 
-        //public IActionResult OrderReport()
-        //{
-        //    List<Order> orders = _orderRepository.GetAll();
+        [Authorize(Permissions.OrderReports.View)]
 
-        //    ViewBag.status = _orderStateRepository.GetAll().ToList();
-
-        //    return View(orders);
-        //}
-
-        //[HttpPost]
         public IActionResult OrderReport(string startDate, string endDate, int statusId)
         {
             List<OrderReporttWithOrderByStatusDateViewModel> ordersViewModel = new List<OrderReporttWithOrderByStatusDateViewModel>();

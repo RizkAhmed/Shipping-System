@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Shipping_System.Models;
 using Shipping_System.Constants;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Shipping_System.Areas.Identity.Pages.Account
 {
@@ -113,14 +114,19 @@ namespace Shipping_System.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+
                 // This doesn't count login failures towards account lockout
+
+
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                SignInResult result = SignInResult.Failed;
+                if (user is not null && !user.IsDeleted)
+                     result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
 
                     _logger.LogInformation("User logged in.");
-                    var user = await _userManager.FindByEmailAsync(Input.Email);
                     if (_userManager.IsInRoleAsync(user, Roles.Representative.ToString()).Result)
                         return RedirectToAction("Home", "Representatives");
                     if (_userManager.IsInRoleAsync(user, Roles.Trader.ToString()).Result)
@@ -128,6 +134,11 @@ namespace Shipping_System.Areas.Identity.Pages.Account
 
                     return RedirectToAction("Index", "Home");
                 }
+                //if(user.IsDeleted)
+                //{
+                //    ModelState.AddModelError(string.Empty, "User is not available now");
+                //    return Page();
+                //}
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
@@ -139,7 +150,10 @@ namespace Shipping_System.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    if (user is not null && user.IsDeleted)
+                        ModelState.AddModelError(string.Empty, "User is not available now");
+                    else
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
             }

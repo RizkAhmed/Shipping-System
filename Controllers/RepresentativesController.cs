@@ -42,13 +42,13 @@ namespace Shipping_System.Controllers
             _productRepository = productRepository;
 
         }
-        [Authorize(Permissions.Representatives.View)]
+        [Authorize(Permissions.Users.View)]
         public IActionResult Index()
         {
             List<Representative> reps = _representativeRepostiory.GetAll();
             return View(reps);
         }
-
+        [Authorize(Permissions.Representatives.View)]
         public IActionResult Home()
         {
             var username = User.Identity.Name;
@@ -58,7 +58,7 @@ namespace Shipping_System.Controllers
             return View (orders);
         }
 
-        [Authorize(Permissions.Representatives.Create)]
+        [Authorize(Permissions.Users.Create)]
         public async Task<IActionResult> Create()
         {
             var repViewModel = new RepresentativeGovBranchPercentageViewModel
@@ -70,7 +70,7 @@ namespace Shipping_System.Controllers
             return View(repViewModel);
         }
 
-        [Authorize(Permissions.Representatives.Create)]
+        [Authorize(Permissions.Users.Create)]
         [HttpPost]
         public async Task<IActionResult> Create(RepresentativeGovBranchPercentageViewModel repViewModel)
         {
@@ -124,7 +124,7 @@ namespace Shipping_System.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Permissions.Representatives.Edit)]
+        [Authorize(Permissions.Users.Edit)]
         public async Task<IActionResult> Edit(string AppUserId)
         {
             if (AppUserId == null)
@@ -152,7 +152,7 @@ namespace Shipping_System.Controllers
             return View(repViewModel);
         }
 
-        [Authorize(Permissions.Representatives.Edit)]
+        [Authorize(Permissions.Users.Edit)]
         [HttpPost]
         public async Task<IActionResult> Edit(RepresentativeGovBranchPercentageViewModel repViewModel)
         {
@@ -202,7 +202,7 @@ namespace Shipping_System.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Permissions.Representatives.Delete)]
+        [Authorize(Permissions.Users.Delete)]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -221,7 +221,7 @@ namespace Shipping_System.Controllers
 
             return Content("sucsses");
         }
-        [Authorize(Permissions.Representatives.Delete)]
+        [Authorize(Permissions.Users.Delete)]
         public async Task<IActionResult> changeState(string id)
         {
             if (id == null)
@@ -237,6 +237,8 @@ namespace Shipping_System.Controllers
             _representativeRepostiory.Save();
             return Ok();
         }
+
+        [Authorize(Permissions.Representatives.View)]
         public ActionResult ChangeStatus(int orderId,int statusId)
         {
             if(orderId == null||statusId ==null)

@@ -11,7 +11,7 @@
         Governorate,
         Orderes,
         WeightSetting,
-        TraderStatistics
+        OrderReports
     }
 
 }

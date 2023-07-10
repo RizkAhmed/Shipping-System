@@ -16,12 +16,12 @@
 
 
 
-    @if (AuthorizationService.AuthorizeAsync(User, Permissions.TraderStatistics.View).Result.Succeeded)
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Traders.View).Result.Succeeded)
     {
         <li class="nav-item">
             <a class="nav-link collapsed" asp-area="" asp-controller="Traders" asp-action="Home">
                 <i class="fa-solid fa-house"></i>
-                <span>Trader Home</span>
+                <span>Home</span>
             </a>
         </li>
     }
@@ -30,7 +30,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" asp-area="" asp-controller="Representatives" asp-action="Home">
                 <i class="fa-solid fa-house"></i>
-                <span>Rep. Home</span>
+                <span>Home</span>
             </a>
         </li>
     }
@@ -39,7 +39,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" asp-area="" asp-controller="Employees" asp-action="Home">
                 <i class="fa-solid fa-house"></i>
-                <span>Employee Home</span>
+                <span>Home</span>
             </a>
         </li>
     }
@@ -54,7 +54,7 @@
             </a>
         </li>
     }
-    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
+    @*@if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
     {
         <li class="nav-item">
             <a class="nav-link collapsed" asp-area="" asp-controller="Users" asp-action="Index">
@@ -62,7 +62,7 @@
                 <span>Users</span>
             </a>
         </li>
-    }
+    }*@
         <!-- Nav Item - Employee -->
     @if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
     {
@@ -74,7 +74,7 @@
         </li>
     }
 
-    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Representatives.View).Result.Succeeded)
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
     {
         <!-- Nav Item - Representative -->
         <li class="nav-item">
@@ -84,7 +84,7 @@
             </a>
         </li>
     }
-    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Traders.View).Result.Succeeded)
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Users.View).Result.Succeeded)
     {
         <!-- Nav Item - Trader -->
         <li class="nav-item">
@@ -124,13 +124,16 @@
             </a>
         </li>
     }
-
-    <li class="nav-item">
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.OrderReports.View).Result.Succeeded)
+    {
+        <li class="nav-item">
         <a class="nav-link collapsed" asp-area="" asp-controller="Order" asp-action="OrderReport">
             <i class="fa-solid fa-envelopes-bulk"></i>
             <span>Order Reports</span>
         </a>
     </li>
+    }
+    
 
 
     @if (AuthorizationService.AuthorizeAsync(User, Permissions.WeightSetting.View).Result.Succeeded)

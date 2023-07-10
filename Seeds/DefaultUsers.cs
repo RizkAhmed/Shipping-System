@@ -54,11 +54,16 @@ namespace Shipping_System.Seeds
 
         private static async Task SeedClaimsForSuperUser(this RoleManager<IdentityRole> roleManager)
         {
-            var adminRole = await roleManager.FindByNameAsync(Roles.SuperAdmin.ToString());
+            var superAdminRole = await roleManager.FindByNameAsync(Roles.SuperAdmin.ToString());
 
-            await roleManager.AddPermissionClaims(adminRole, Modules.Branches.ToString());
-            await roleManager.AddPermissionClaims(adminRole, Modules.Roles.ToString());
-            await roleManager.AddPermissionClaims(adminRole, Modules.Users.ToString());
+            await roleManager.AddPermissionClaims(superAdminRole, Modules.Branches.ToString());
+            await roleManager.AddPermissionClaims(superAdminRole, Modules.Roles.ToString());
+            await roleManager.AddPermissionClaims(superAdminRole, Modules.Users.ToString());
+            await roleManager.AddPermissionClaims(superAdminRole, Modules.City.ToString());
+            await roleManager.AddPermissionClaims(superAdminRole, Modules.Governorate.ToString());
+            await roleManager.AddPermissionClaims(superAdminRole, Modules.WeightSetting.ToString());
+            await roleManager.AddClaimAsync(superAdminRole, new Claim("Permission", $"Permissions.OrderReports.View"));
+            await roleManager.AddClaimAsync(superAdminRole, new Claim("Permission", $"Permissions.Orderes.View"));
         }
 
         public static async Task AddPermissionClaims(this RoleManager<IdentityRole> roleManager, IdentityRole role, string module)

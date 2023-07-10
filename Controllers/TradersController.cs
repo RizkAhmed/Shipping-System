@@ -47,7 +47,7 @@ namespace Shipping_System.Controllers
             _orderStateRepository = orderStateRepository;
         }
 
-        [Authorize(Permissions.Traders.View)]
+        [Authorize(Permissions.Users.View)]
         public IActionResult Index()
         {
             var traders = _traderRepository.GetAll().ToList();
@@ -66,7 +66,7 @@ namespace Shipping_System.Controllers
             return View(trader);
         }
 
-        [Authorize(Permissions.Traders.Create)]
+        [Authorize(Permissions.Users.Create)]
         [HttpPost]
         public async Task<IActionResult> Create(TraderAndUserViewModel model)
         {
@@ -121,7 +121,7 @@ namespace Shipping_System.Controllers
             _traderRepository.Save();
             return RedirectToAction(nameof(Index));
         }
-        [Authorize(Permissions.Traders.Edit)]
+        [Authorize(Permissions.Users.Edit)]
         public async Task<IActionResult> Edit(string AppUserId)
         {
             if (AppUserId == null)
@@ -151,7 +151,7 @@ namespace Shipping_System.Controllers
             return View(model);
         }
 
-        [Authorize(Permissions.Traders.Edit)]
+        [Authorize(Permissions.Users.Edit)]
         [HttpPost]
         public async Task<IActionResult> Edit(TraderAndUserViewModel model)
         {
@@ -202,7 +202,7 @@ namespace Shipping_System.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Permissions.Representatives.Delete)]
+        [Authorize(Permissions.Users.Delete)]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -222,7 +222,7 @@ namespace Shipping_System.Controllers
             return Content("sucsses");
         }
 
-        [Authorize(Permissions.Traders.Delete)]
+        [Authorize(Permissions.Users.Delete)]
         public async Task<IActionResult> changeState(string id)
         {
             if (id == null)
@@ -238,7 +238,7 @@ namespace Shipping_System.Controllers
             _traderRepository.Save();
             return Ok();
         }
-        [Authorize(Permissions.TraderStatistics.View)]
+        [Authorize(Permissions.Traders.View)]
         public IActionResult Home()
         {
 

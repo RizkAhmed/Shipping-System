@@ -40,15 +40,6 @@
             public const string Delete = "Permissions.WeightSetting.Delete";
         }
         
-
-        public static class TraderStatistics
-        {
-            public const string View = "Permissions.TraderStatistics.View";
-            public const string Create = "Permissions.TraderStatistics.Create";
-            public const string Edit = "Permissions.TraderStatistics.Edit";
-            public const string Delete = "Permissions.TraderStatistics.Delete";
-        }
-
         public static class Orderes
         {
             public const string View = "Permissions.Orderes.View";
@@ -99,6 +90,13 @@
             public const string Create = "Permissions.Governorate.Create";
             public const string Edit = "Permissions.Governorate.Edit";
             public const string Delete = "Permissions.Governorate.Delete";
+        }
+        public static class OrderReports
+        {
+            public const string View = "Permissions.OrderReports.View";
+            public const string Create = "Permissions.OrderReports.Create";
+            public const string Edit = "Permissions.OrderReports.Edit";
+            public const string Delete = "Permissions.OrderReports.Delete";
         }
     }
 }

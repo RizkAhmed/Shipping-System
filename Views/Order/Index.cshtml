@@ -59,12 +59,12 @@
                         <th>shipping Cost</th>
                         @if (User.IsInRole(Roles.Trader.ToString()))
                         {
-                        <th>Edit Order</th>
+                            <th>Edit Order</th>
                         }
-                        @if (User.IsInRole(Roles.SuperAdmin.ToString()) || (User.IsInRole(Roles.Admin.ToString())) || (User.IsInRole(Roles.Basic.ToString())))
+                        @if (!User.IsInRole(Roles.Trader.ToString()))
                         {
-                        <th>Edit Status</th>
-                        }                   
+                            <th>Edit Status</th>
+                        }
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.Delete).Result.Succeeded)
                         {
                             <th>Delete</th>
@@ -105,36 +105,18 @@
                                     <td></td>
                                 }
                             }
-                            @if (User.IsInRole(Roles.SuperAdmin.ToString()) || (User.IsInRole(Roles.Admin.ToString())) || (User.IsInRole(Roles.Basic.ToString())))
-{
+                            @if (!User.IsInRole(Roles.Trader.ToString()))
+                            {
                                 <td>
                                     <a asp-route-id="@item.Id" asp-action="Status" class="btn btn-primary">Status</a>
                                 </td>
-}                         
-                            
-
-
-                            @*@if (User.IsInRole("Trader"))
-
-
-                        {*@
-
-                            @*                @if (item.Status == "New")
-                        {
-                        <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
-                        </td>
-                        }
-                        else
-                        {
-                        <td></td>
-                        }*@
+                            }
                             @if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.Delete).Result.Succeeded)
-{
-                            <td>
-                                <a class="btn btn-danger" onclick="Remove(@item.Id)"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-}
+                            {
+                                <td>
+                                    <a class="btn btn-danger" onclick="Remove(@item.Id)"><i class="fa-solid fa-trash"></i></a>
+                                </td>
+                            }
                             @*}*@
 
                             <td>
@@ -145,9 +127,9 @@
                 </tbody>
             </table>
 
-</div>
-    </div>
         </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
@@ -168,44 +150,44 @@
                         console.log(i.status)
                         document.getElementById("tableData").innerHTML +=
                             `<tr id="row_${i.id}" style="${backgroundColor}">
-                                  <td>                    
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    </div>
-                                  </td>
-                                  <td>${i.id} </td>
-                                  <td>${i.date.slice(0,10)}</td>
-                                  <td>${i.client} </br> ${i.phoneNumber} </td>
-                                  <td>${i.governorate}</td>
-                                  <td>${i.city}</td>
-                                  <td>${i.shippingPrice}</td>
+                                                  <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                    </div>
+                                                  </td>
+                                                  <td>${i.id} </td>
+                                                  <td>${i.date.slice(0, 10)}</td>
+                                                  <td>${i.client} </br> ${i.phoneNumber} </td>
+                                                  <td>${i.governorate}</td>
+                                                  <td>${i.city}</td>
+                                                  <td>${i.shippingPrice}</td>
 
         @if (User.IsInRole(Roles.Trader.ToString()))
-{
-           <td>
-           
-                                 ${i.status === "New" ? `<a id="EditBtn_${i.id}" onclick="edit(${i.id})" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>` : ''}
-                             </td>
-}
-    @if (User.IsInRole(Roles.SuperAdmin.ToString()) || (User.IsInRole(Roles.Admin.ToString())) || (User.IsInRole(Roles.Basic.ToString())))
-{
-                      <td>
-                          <button id="statusBtn_${i.id}" class="btn btn-primary" onclick="editStatus(${i.id})">Status</button>
-                      </td>
-}
+        {
+                        <td>
+                        ${i.status === "New" ? `<a id="EditBtn_${i.id}" onclick="edit(${i.id})" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>` : ''}
+                        </td>
+        }
+        @if (!User.IsInRole(Roles.Trader.ToString()))
 
-    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.Delete).Result.Succeeded)
-{
-                     <td>
-                         <a class="btn btn-danger" onclick="Remove(${i.id})"><i class="fa-solid fa-trash"></i></a>
-                     </td>
-}                    
-                     <td>
-                         <a class="btn btn-info text-white"><i class="fa-solid fa-print"></i></a>
-                     </td>
+        {
+                        <td>
+                            <button id="statusBtn_${i.id}" class="btn btn-primary" onclick="editStatus(${i.id})">Status</button>
+                        </td>
+        }
+
+        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.Delete).Result.Succeeded)
+        {
+                        <td>
+                            <a class="btn btn-danger" onclick="Remove(${i.id})"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+        }
+                                     <td>
+                                         <a class="btn btn-info text-white"><i class="fa-solid fa-print"></i></a>
+                                     </td>
 
 
-                    </tr>`
+                                    </tr>`
                     }
                 }
             });
@@ -231,14 +213,14 @@
 
         function edit(id) {
             $.ajax({
-                url: `/Order/Edit/${id}`, 
+                url: `/Order/Edit/${id}`,
                 method: 'Get',
                 success: function (response) {
-                    
+
                     window.location.href = `/Order/Edit/${id}`;
                 },
                 error: function (error) {
-                    
+
                     console.error('Error updating status:', error);
                 }
             });
@@ -247,9 +229,9 @@
         function Remove(id) {
             var row = document.getElementById("row_" + id)
             console.log(row)
-            if (confirm("Are You Sure To Delete This Order")){
+            if (confirm("Are You Sure To Delete This Order")) {
                 $.ajax({
-                    url: `/Order/Delete/${id}`, 
+                    url: `/Order/Delete/${id}`,
                     success: function (response) {
                         // Handle the success response
                         //window.location.href = `/Order/Delete/${id}`;
@@ -257,7 +239,7 @@
                         row.remove();
                     },
                     error: function (error) {
-                        
+
                         console.error('Error updating status:', error);
                     }
                 });

@@ -98,7 +98,6 @@ namespace Shipping_System
                 await Seeds.DefaultRoles.SeedAsync(roleManager);
                 await Seeds.DefaultUsers.SeedBasicUserAsync(userManager);
                 await Seeds.DefaultUsers.SeedSuperAdminUserAsync(userManager, roleManager);
-
                 logger.LogInformation("Data seeded");
                 logger.LogInformation("Application Started");
             }
