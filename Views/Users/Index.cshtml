@@ -3,10 +3,22 @@
     ViewData["title"] = "Users";
     var index = 1;
 }
-<div class="justify-content-between mb-3">
-    <a class="btn btn-primary" asp-action="Create">Add User</a>
-    <a class="btn btn-primary" asp-route-word="#ALL#" asp-action="Index">Get All</a>
+
+<h1>Users</h1>
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a asp-action="Index" class="text-decoration-none">Users</a></h6>
+        </div>
+
+        <div>
+            <a class="btn btn-primary" asp-action="Create">Add User</a>
+            <a class="btn btn-primary" asp-route-word="#ALL#" asp-action="Index">Get All</a>
+        </div>
+    </div>
 </div>
+
 
 <div class="card shadow mb-4 text-center">
     <div class="card-body">
@@ -16,12 +28,12 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Eamil</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Branch</th>
                     <th scope="col">Role</th>
                     <th scope="col">State</th>
-                    <th></th>
+                    <th scope="col">Actions</th>
 
                 </tr>
                 </thead>

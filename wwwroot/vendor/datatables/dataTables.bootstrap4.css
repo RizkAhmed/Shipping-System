@@ -45,6 +45,8 @@ div.dataTables_wrapper div.dataTables_filter input {
 }
 div.dataTables_wrapper div.dataTables_info {
   padding-top: 0.85em;
+  display: flex;
+  justify-content :start;
 }
 div.dataTables_wrapper div.dataTables_paginate {
   margin: 0;

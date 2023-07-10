@@ -410,7 +410,7 @@ namespace Shipping_System.Controllers
                 ordersViewModelItem.OrderPriceRecieved = item.OrderPriceRecieved;
                 ordersViewModelItem.ShippingPrice = item.ShippingPrice;
                 ordersViewModelItem.ShippingPriceRecived = item.ShippingPriceRecived;
-                ordersViewModelItem.CompanyRate = item.RepresentativeId==null? 0 : (item.Representative.CompanyPercentageOfOrder * ordersViewModelItem.ShippingPrice) / 100;
+                ordersViewModelItem.CompanyRate = item.RepresentativeId==null? 0 : (item.Representative.CompanyPercentageOfOrder * ordersViewModelItem.ShippingPrice) / 100M;
                 ordersViewModelItem.Date = item.creationDate;
                 ordersViewModel.Add(ordersViewModelItem);
 

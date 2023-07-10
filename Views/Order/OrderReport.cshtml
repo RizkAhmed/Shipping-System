@@ -7,9 +7,19 @@
     var i = 1;
 }
 
-<h1>Order Report</h1>
+
+<h1>Order Reports</h1>
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a href="#" class="text-decoration-none">Order Reports</a></h6>
+        </div>
+    </div>
+</div>
+
 <form asp-controller="Order" asp-action="OrderReport">
-<div class="d-flex mb-3">
+    <div class="d-flex mb-3">
         <div class="col-md-3">
             <label>Status :</label>
             <select name="statusId" asp-items="status" class="form-select form-control" aria-label="Default select example">
@@ -29,7 +39,8 @@
         <div class="col-md-3" style="margin-top:32px;">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
-</div>
+    </div>
+
 </form>
 
 <div class="card shadow mb-4 text-center">
@@ -83,6 +94,5 @@
     </div>
 </div>
 
-@section Scripts {
-
-}
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/js/demo/datatables-demo.js"></script>

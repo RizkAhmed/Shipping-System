@@ -8,56 +8,64 @@
     SelectList branchItems = new SelectList(Model.Branches, "Id", "Name");
 }
 
-<h1>Edit user</h1>
+<h1>Edit Employee</h1>
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Employees</a> > <b><a asp-action="Edit" class="text-decoration-none">Edit Employee</a></b></h6>
+        </div>
+    </div>
+</div>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-2">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="row">
+                <div class="form-group mb-2 col-md-4">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2 col-md-4">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2 col-md-4">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2 col-md-4">
+                    <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2 col-md-4">
+                    <label asp-for="BranchId" class="control-label"></label>
+                    <select asp-for="BranchId" asp-items="branchItems" class="form-control">
+                        <option value="">--Select Branch--</option>
+                    </select>
+                    <span asp-validation-for="BranchId" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2 col-md-4">
+
+                    <label asp-for="RoleName" class="control-label">Role</label>
+                    <select asp-for="RoleName" asp-items="roleItems" class="form-control">
+                        <option value="">--Select Role--</option>
+                    </select>
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4 col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+
+                </div>
             </div>
 
-            <div class="form-group mb-2">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-2">
-                <label asp-for="BranchId" class="control-label"></label>
-                <select asp-for="BranchId" asp-items="branchItems" class="form-control">
-                    <option value="">--Select Branch--</option>
-                </select>
-                <span asp-validation-for="BranchId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-2">
-
-                <label asp-for="RoleName" class="control-label"></label>
-                <select asp-for="RoleName" asp-items="roleItems" class="form-control">
-                    <option value="">--Select Role--</option>
-                </select>
-                <span asp-validation-for="RoleName" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-4">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a class="btn btn-secondary" asp-action="Index">Cancel</a>
-
-            </div>
         </form>
     </div>
 </div>

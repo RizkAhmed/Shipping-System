@@ -3,7 +3,18 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Governorate</h1>
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Governorates</a> > <b><a asp-action="Edit" class="text-decoration-none">Edit Governorate</a></b></h6>
+        </div>
+    </div>
+</div>
+
+<hr />
+
 <form method="post" asp-action="Edit">
     @Html.AntiForgeryToken()
     <input class="form-control" asp-for="Id" hidden="" />
@@ -12,5 +23,5 @@
         <input class="form-control" asp-for="Name" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <input type="submit" value="Save" class="btn btn-primary mt-2"   />
+    <input type="submit" value="Save" class="btn btn-primary mt-4"   />
 </form>

@@ -4,33 +4,48 @@
     SelectList govItem = new SelectList(ViewBag.GovList, "Id", "Name");
 }
 
-<h1>Create</h1>
+<h1>Add City</h1>
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Cities</a> > <b><a asp-action="create" class="text-decoration-none">Add Cities</a></b></h6>
+        </div>
+    </div>
+</div>
+
+<hr />
 
 <form method="post" asp-action="Create">
     @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="mt-3 col-md-6">
+            <label asp-for="GoverId">Governorate</label>
 
-    <div>
-        <label asp-for="Name"></label>
-        <input class="form-control" asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="ShippingCost"></label>
-        <input class="form-control" asp-for="ShippingCost" />
-        <span asp-validation-for="ShippingCost" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="PickUpCost"></label>
-        <input class="form-control" asp-for="PickUpCost" />
-        <span asp-validation-for="PickUpCost" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="GoverId">Governorate</label>
+            <select class="form-control mb-3" asp-for="GoverId" asp-items="govItem">
+                <option value="0">-- Select Governorate --</option>
 
-        <select class="form-control mb-3" asp-for="GoverId" asp-items="govItem">
-            <option value="0">----- Select Governorate-------</option>
-
-        </select>
+            </select>
+        </div>
+        <div class="mt-3 col-md-6">
+            <label asp-for="Name"></label>
+            <input class="form-control" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mt-3 col-md-6">
+            <label asp-for="ShippingCost"></label>
+            <input class="form-control" asp-for="ShippingCost" />
+            <span asp-validation-for="ShippingCost" class="text-danger"></span>
+        </div>
+        <div class="mt-3 col-md-6">
+            <label asp-for="PickUpCost"></label>
+            <input class="form-control" asp-for="PickUpCost" />
+            <span asp-validation-for="PickUpCost" class="text-danger"></span>
+        </div>
     </div>
-    <input type="submit" value="Create" class="btn btn-primary"   />
+
+
+    <button type="submit" value="Create" class="btn btn-primary mt-4">Add</button>
+    <a class="btn btn-secondary mt-4" asp-action="Index">Cancel</a>
+
 </form>

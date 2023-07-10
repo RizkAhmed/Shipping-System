@@ -7,10 +7,22 @@
 }
 
 <h1>Branches</h1>
-@if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.Create).Result.Succeeded)
-{
-    <a class="btn btn-primary mb-3" asp-action="Create">Create New Branch</a>
-}
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a asp-action="Index" class="text-decoration-none">Branches</a></h6>
+        </div>
+
+        <div>
+            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Branches.Create).Result.Succeeded)
+            {
+                <a class="btn btn-primary" asp-action="Create">Add Branch</a>
+            }
+        </div>
+    </div>
+</div>
+
 
 
 <div class="card shadow mb-4 text-center">
@@ -21,9 +33,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Name </th>
-                        <th>CreationDate</th>        
+                        <th>Creation Date</th>        
                         <th>Status</th>
-                        <th></th>
+                        <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +52,7 @@
                                 </label>
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-controller="Branches" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                                <a asp-action="Edit" asp-controller="Branches" asp-route-id="@item.Id" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     }

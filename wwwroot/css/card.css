@@ -1,4 +1,14 @@
-﻿.card {
+﻿.dataTables_length {
+    display: flex;
+    justify-content: start;
+}
+
+.dataTables_info {
+    display: flex;
+    justify-content: start;
+}
+
+.card {
     background-color: #fff;
     border-radius: 10px;
     border: none;

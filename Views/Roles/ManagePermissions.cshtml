@@ -18,22 +18,28 @@
             -moz-appearance: none;
             width: 16px;
             height: 16px;
-            border: 2px solid #007bff; /* replace with your desired blue color */
+            border: 2px solid #007bff; 
             border-radius: 3px;
             outline: none;
             transition: all 0.3s ease-in-out;
         }
 
             .check input[type="checkbox"]:checked {
-                background-color: #007bff; /* replace with your desired blue color */
-                border-color: #007bff; /* replace with your desired blue color */
+                background-color: #007bff; 
+                border-color: #007bff; 
             }
 </style>
 <form asp-action="ManagePermissions" method="post">
     <div class="card mt-4">
         <div class="card-header">
             <h2>@Model.RoleName</h2>
-            Add/Remove Permissions
+            <div class="container my-2">
+                <div class="row justify-content-between">
+                    <div>
+                        <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Roles</a> > <b><a href="#" class="text-decoration-none">Manage Permissions</a></b></h6>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card shadow mb-4 text-center">
             <div class="card-body">
@@ -97,7 +103,12 @@
     </div>
     <div class="card-footer">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a asp-action="Index" class="btn btnalert-secondary">Cancel</a>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
     </div>
 </form>
+
+
+
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/js/demo/datatables-demo.js"></script>

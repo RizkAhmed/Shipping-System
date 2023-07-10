@@ -4,7 +4,19 @@
 }
 
 <h1>Cities</h1>
-<a asp-action="Create" class="btn btn-primary mb-3">Add New City</a>
+
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a asp-action="Index" class="text-decoration-none">Cities</a></h6>
+        </div>
+
+        <div>
+            <a asp-action="Create" class="btn btn-primary">Add City</a>
+        </div>
+    </div>
+</div>
 
 <div class="card shadow mb-4 text-center">
     <div class="card-body">
@@ -17,7 +29,7 @@
                         <th>Shipping Cost</th>
                         <th>PickUp Cost</th>
                         <th>Status</th>
-                        <th></th>
+                        <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +47,7 @@
                                 </label>
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-controller="City" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                                <a asp-action="Edit" asp-controller="City" asp-route-id="@item.Id" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     }

@@ -5,39 +5,34 @@
     int index = 1;
 }
 
-<h1>Employee</h1>
+<h1>Employees</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a asp-action="Index" class="text-decoration-none">Employees</a></h6>
+        </div>
+
+        <div>
+            <a asp-action="Create" class="btn btn-primary">Add Employee</a>
+        </div>
+    </div>
+</div>
+
 <div class="card shadow mb-4 text-center">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Phone number
-                        </th>
-                        <th>
-                            Branch
-                        </th>
-                        <th>
-                            Role
-                        </th>
-                        <th>
-                            State
-                        </th>
-                        <th></th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone number</th>
+                        <th>Branch</th>
+                        <th>Role</th>
+                        <th>State</th>
+                        <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,25 +40,12 @@
                     {
                         <tr id="row_@item.Id">
 
-                            <td>
-                                @(index++)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PhoneNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Branch.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Role)
-
-                            </td>
+                            <td>@(index++)</td>
+                            <td>@item.Name</td>
+                            <td>@item.Email</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>@item.Branch.Name</td>
+                            <td>@item.Role</td>
                             <td>
                                 <label class="switch">
                                     <input onclick="changeStatus('@item.Id')" type="checkbox" @(item.IsDeleted ? "" : "checked")>
@@ -97,7 +79,4 @@
             });
         }
     </script>
-}
-@section HeadersTitle{
-    Employee
 }

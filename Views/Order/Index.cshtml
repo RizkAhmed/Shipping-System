@@ -7,12 +7,27 @@
 }
 
 <h1>Orders</h1>
-@if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.Create).Result.Succeeded)
-{
-    <p>
-        <a class="btn btn-outline-primary my-2" asp-action="Create">Create New</a>
-    </p>
-}
+
+<div class="container mt-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a asp-action="Index" class="text-decoration-none">Orders</a></h6>
+        </div>
+
+        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Orderes.Create).Result.Succeeded)
+        {
+            <p>
+                <a class="btn btn-primary" asp-action="Create">Add Order</a>
+            </p>
+        }
+    </div>
+</div>
+
+
+
+
+
+
 <div class="row my-3 flex-wrap ">
     <div class="col-md-3 my-1 filter-btn">
         <button data-orderState="0" onclick="filterOrders(0)" class="btn btn-primary w-100">All</button>
@@ -198,19 +213,17 @@
         }
 
         function editStatus(id) {
-            // Code to handle the status button click event
-            // You can use AJAX or other techniques to send a request to the server to update the status
-            // Here's an example AJAX request:
+
             $.ajax({
-                url: `/Order/Status/${id}`, // Replace with your actual endpoint URL
+                url: `/Order/Status/${id}`,
                 method: 'Get',
                 success: function (response) {
-                    // Handle the success response
+
                     window.location.href = `/Order/Status/${id}`;
 
                 },
                 error: function (error) {
-                    // Handle the error response
+
                     console.error('Error updating status:', error);
                 }
             });
@@ -218,26 +231,25 @@
 
         function edit(id) {
             $.ajax({
-                url: `/Order/Edit/${id}`, // Replace with your actual endpoint URL
+                url: `/Order/Edit/${id}`, 
                 method: 'Get',
                 success: function (response) {
-                    // Handle the success response
+                    
                     window.location.href = `/Order/Edit/${id}`;
                 },
                 error: function (error) {
-                    // Handle the error response
+                    
                     console.error('Error updating status:', error);
                 }
             });
         }
 
         function Remove(id) {
-            //ToDO: remove user
             var row = document.getElementById("row_" + id)
             console.log(row)
             if (confirm("Are You Sure To Delete This Order")){
                 $.ajax({
-                    url: `/Order/Delete/${id}`, // Replace with your actual endpoint URL
+                    url: `/Order/Delete/${id}`, 
                     success: function (response) {
                         // Handle the success response
                         //window.location.href = `/Order/Delete/${id}`;
@@ -245,7 +257,7 @@
                         row.remove();
                     },
                     error: function (error) {
-                        // Handle the error response
+                        
                         console.error('Error updating status:', error);
                     }
                 });

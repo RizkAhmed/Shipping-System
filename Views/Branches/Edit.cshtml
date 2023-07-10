@@ -1,15 +1,15 @@
 ﻿@model Shipping_System.Models.Branch
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Add Branch</h1>
+<h1>Edit Branch</h1>
 
 <div class="container my-2">
     <div class="row justify-content-between">
         <div>
-            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Branches</a> > <b><a asp-action="create" class="text-decoration-none">Add Branch</a></b></h6>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Branches</a> > <b><a asp-action="Edit" class="text-decoration-none">Edit Branch</a></b></h6>
         </div>
     </div>
 </div>
@@ -17,21 +17,16 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-@*            <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>*@
-       
             <div class="form-group">
-                <button type="submit" value="Create" class="btn btn-primary">Add</button>
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

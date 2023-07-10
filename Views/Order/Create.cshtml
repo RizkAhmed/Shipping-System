@@ -11,7 +11,15 @@
     var TraderId = (string)ViewBag.TraderId;
 }
 
-<h1>Add New Order</h1>
+<h1>Add Order</h1>
+
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Orders</a> > <b><a asp-action="create" class="text-decoration-none">Add Order</a></b></h6>
+        </div>
+    </div>
+</div>
 
 <hr />
 <form asp-action="Create" method="post" asp-route-orderNO="@OrderNo">
@@ -331,5 +339,5 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
 </div>

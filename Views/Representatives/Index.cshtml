@@ -5,11 +5,21 @@
     int index = 1;
 }
 
-<h1>Representative</h1>
+<h1>Representatives</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> > <a asp-action="Index" class="text-decoration-none">Representatives</a></h6>
+        </div>
+
+        <div>
+            <a asp-action="Create" class="btn btn-primary">Add Representative</a>
+        </div>
+    </div>
+</div>
+
+
 <div class="card shadow mb-4 text-center">
     <div class="card-body">
         <div class="table-responsive">
@@ -32,12 +42,12 @@
                             Branch
                         </th>
                         <th>
-                            CreationDate
+                            Creation Date
                         </th>
                         <th>
                             State
                         </th>
-                        <th></th>
+                        <th>Edit</th>
 
                     </tr>
                 </thead>

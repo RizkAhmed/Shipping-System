@@ -7,76 +7,83 @@
     SelectList DiscountTypes = new SelectList(Model.DiscountTypes, "Id", "Percentage");
 }
 
-<h1>Create</h1>
+<h1>Add Representative</h1>
 
-<h4>Representative</h4>
+<div class="container my-2">
+    <div class="row justify-content-between">
+        <div>
+            <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Representatives</a> > <b><a asp-action="create" class="text-decoration-none">Add Representative</a></b></h6>
+        </div>
+    </div>
+</div>
+
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="CompanyPercentageOfOrder" class="control-label"></label>
+                    <input asp-for="CompanyPercentageOfOrder" class="form-control" />
+                    <span asp-validation-for="CompanyPercentageOfOrder" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="GovernorateId" class="control-label"></label>
+                    <select class="form-control" asp-for="GovernorateId" asp-items="govItem">
+                        <option value="0">-- Select Governorate --</option>
+                    </select>
+                    <span asp-validation-for="GovernorateId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="BranchId" class="control-label"></label>
+                    <select class="form-control" asp-for="BranchId" asp-items="BranchsItem">
+                        <option value="0">-- Select Branch --</option>
+                    </select>
+                    <span asp-validation-for="BranchId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="DiscountTypeId" class="control-label"></label>
+                    <select class="form-control" asp-for="DiscountTypeId" asp-items="DiscountTypes">
+                        <option value="0">-- Select Discount Type --</option>
+                    </select>                <span asp-validation-for="DiscountTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4  col-md-12">
+                    <button type="submit" value="Create" class="btn btn-primary" >Add</button>
+                    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+                </div>
+            </div>
 
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompanyPercentageOfOrder" class="control-label"></label>
-                <input asp-for="CompanyPercentageOfOrder" class="form-control" />
-                <span asp-validation-for="CompanyPercentageOfOrder" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GovernorateId" class="control-label"></label>
-                <select class="form-control" asp-for="GovernorateId" asp-items="govItem">
-                    <option value="0">----- Select Governorate-------</option>
-                </select>
-                <span asp-validation-for="GovernorateId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BranchId" class="control-label"></label>
-                <select class="form-control" asp-for="BranchId" asp-items="BranchsItem">
-                    <option value="0">----- Select Branch-------</option>
-                </select>
-                <span asp-validation-for="BranchId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiscountTypeId" class="control-label"></label>
-                <select class="form-control" asp-for="DiscountTypeId" asp-items="DiscountTypes">
-                    <option value="0">----- Select Discount Type-------</option>
-                </select>                <span asp-validation-for="DiscountTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-4">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a class="btn btn-secondary" asp-action="Index">Cancel</a>
-            </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{
