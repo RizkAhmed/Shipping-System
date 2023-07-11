@@ -19,7 +19,6 @@
 
 <partial name="_AddRole" model="new RoleFormViewModel()"></partial>
 
-
 <div class="card shadow mb-4 text-center">
     <div class="card-body">
         <div class="table-responsive">
@@ -32,16 +31,18 @@
                     </tr>
                 </thead>
                 <tbody class="bg-light">
-
+                    
                     @foreach (var role in Model)
                     {
                         <tr id="row_@role.Id">
                             <th scope="row">@(index++)</th>
                             <td id="name_@role.Id">@role.Name</td>
                             <td class="text-end">
+                                @if (@role.Name != "SuperAdmin"){
                                 <a class="btn btn-primary" asp-action="ManagePermissions" asp-route-roleId="@role.Id"><i class="fa-solid fa-gear"></i></a>
                                 <a class="btn btn-danger" onclick="Remove('@role.Id')"><i class="fa-solid fa-trash"></i></a>
                                 <a class="btn btn-success" onclick="Rename('@role.Id')"><i class="fa-solid fa-pen-to-square"></i></a>
+                                }
                             </td>
                         </tr>
                     }
@@ -54,9 +55,9 @@
 </div>
 
 
-
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/js/demo/datatables-demo.js"></script>
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
     <script>
         function Rename(Rid) {
             var nameField = document.getElementById("name_" + Rid)

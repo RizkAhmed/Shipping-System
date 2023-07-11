@@ -1,6 +1,7 @@
 ﻿@model List<Governorate>
 @{
     ViewData["Title"] = "Index";
+    var i = 1;
 }
 
 <h1>Governorates</h1>
@@ -37,7 +38,7 @@
                     @foreach (var item in Model)
                     {
                         <tr id="row_@item.Id">
-                            <td>@item.Id </td>
+                            <td>@(i++)</td>
                             <td>@item.Name</td>
                             <td>
                                 <label class="switch">

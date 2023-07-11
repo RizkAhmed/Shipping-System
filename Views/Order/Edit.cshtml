@@ -34,7 +34,7 @@
         <div class="col-4">
             <label asp-for="OrderTypeId" class="control-label"></label>
             <select class="form-control" asp-for="OrderTypeId" asp-items="orderTypes">
-                <option value="0">----- Select Order Type-------</option>
+                <option value="0">-- Select Order Type --</option>
             </select>
             <span asp-validation-for="OrderTypeId" class="text-danger"></span>
         </div>
@@ -79,7 +79,7 @@
             <div class="form-group mr-3">
                 <label asp-for="ClientGovernorateId" class="control-label"></label>
                 <select id="ClientGovernorateId" class="form-control" asp-for="ClientGovernorateId" asp-items="governorate" onchange="getCitesInGovernrate()">
-                    <option value="0">----- Select Client Governorate Type-------</option>
+                    <option value="0">-- Select Client Governorate --</option>
                 </select>
                 <span asp-validation-for="ClientGovernorateId" class="text-danger"></span>
             </div>
@@ -88,7 +88,7 @@
             <div class="form-group mr-3">
                 <label asp-for="ClientCityId" class="control-label"></label>
                 <select id="ClientCityId" asp-for="ClientCityId" asp-items="city" class="form-control">
-                    <option value="0">----- Select Client City -------</option>
+                    <option value="0">-- Select Client City --</option>
                 </select>
                 <span asp-validation-for="ClientCityId" class="text-danger"></span>
             </div>
@@ -96,55 +96,6 @@
 
 
     </div>
-
-
-
-
-
-@*
-
-
-
-    <div class="form-group">
-        <label asp-for="ClientName" class="control-label"></label>
-        <input asp-for="ClientName" class="form-control" />
-        <span asp-validation-for="ClientName" class="text-danger"></span>
-    </div>
-
- <div class="form-group">
-        <label asp-for="ClientPhone1" class="control-label"></label>
-        <input asp-for="ClientPhone1" class="form-control" />
-        <span asp-validation-for="ClientPhone1" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ClientPhone2" class="control-label"></label>
-        <input asp-for="ClientPhone2" class="form-control" />
-        <span asp-validation-for="ClientPhone2" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ClientEmailAddress" class="control-label"></label>
-        <input asp-for="ClientEmailAddress" class="form-control" />
-        <span asp-validation-for="ClientEmailAddress" class="text-danger"></span>
-    </div>*@
-
-
-@*    <div class="form-group">
-        <label asp-for="ClientGovernorateId" class="control-label"></label>
-        <select id="ClientGovernorateId" class="form-control" asp-for="ClientGovernorateId" asp-items="governorate" onchange="getCitesInGovernrate()">
-            <option value="0">----- Select Client Governorate Type-------</option>
-        </select>
-        <span asp-validation-for="ClientGovernorateId" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
-        <label asp-for="ClientCityId" class="control-label"></label>
-        <select id="ClientCityId" asp-for="ClientCityId" asp-items="city" class="form-control">
-            <option value="0">----- Select Client City -------</option>
-     </select>
-        <span asp-validation-for="ClientCityId" class="text-danger"></span>
-    </div>*@
-
 
     @section Scripts{
         @{
@@ -300,7 +251,7 @@
             <div class="form-group mr-5">
                 <label asp-for="DeliveryTypeId" class="control-label"></label>
                 <select class="form-control" asp-for="DeliveryTypeId" asp-items="deliverTypes">
-                    <option value="0">----- Select Deliver Type-------</option>
+                    <option value="0">-- Select Deliver Type --</option>
                 </select>
                 <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
             </div>
@@ -308,7 +259,7 @@
             <div class="form-group mr-5">
                 <label asp-for="PaymentMethodId" class="control-label"></label>
                 <select class="form-control" asp-for="PaymentMethodId" asp-items="paymentMethods">
-                    <option value="0">----- Select Payment Method-------</option>
+                    <option value="0">-- Select Payment Method --</option>
                 </select>
                 <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
             </div>
@@ -316,7 +267,7 @@
             <div class="form-group mr-5">
                 <label asp-for="BranchId" class="control-label"></label>
                 <select class="form-control" asp-for="BranchId" asp-items="branches">
-                    <option value="0">----- Select Branch-------</option>
+                    <option value="0">-- Select Branch --</option>
                 </select>
                 <span asp-validation-for="BranchId" class="text-danger"></span>
             </div>
@@ -348,7 +299,7 @@
             </div>
             <div>
                 <label></label>
-                <a onclick="AddProduct('@Model.OrderNo')" class="btn btn-success form-control">Add Product</a>
+                <a onclick="AddProduct('@Model.OrderNo')" class="btn btn-success form-control mt-2">Add Product</a>
             </div>
         </span>
         <br />
@@ -390,66 +341,14 @@
                         <td><a class="btn btn-danger" onclick="Remove(@pro.Id)">Delete</a></td>
                     </tr>
                 }
-                    @*product content*@
                 
             </tbody>
         </table>
     </div>
 
-
-
-
-
-
-
-
-   @* <div class="form-group form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" onclick="ToggleVillageName()" asp-for="DeliverToVillage" /> @Html.DisplayNameFor(model => model.DeliverToVillage)
-        </label>
-    </div>
-
-
-    <div class="form-group">
-        <label asp-for="Village_Street" class="control-label"></label>
-        <input id="Village" asp-for="Village_Street" class="form-control" disabled />
-        <span asp-validation-for="Village_Street" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DeliveryTypeId" class="control-label"></label>
-        <select class="form-control" asp-for="DeliveryTypeId" asp-items="deliverTypes">
-            <option value="0">----- Select Deliver Type-------</option>
-        </select>
-        <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
-    </div>
-
-
-
-    <div class="form-group">
-        <label asp-for="PaymentMethodId" class="control-label"></label>
-        <select class="form-control" asp-for="PaymentMethodId" asp-items="paymentMethods">
-            <option value="0">----- Select Payment Method-------</option>
-        </select>
-        <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="BranchId" class="control-label"></label>
-        <select class="form-control" asp-for="BranchId" asp-items="branches">
-            <option value="0">----- Select Branch-------</option>
-        </select>
-        <span asp-validation-for="BranchId" class="text-danger"></span>
-    </div>
-*@
-
-
-
     <div class="form-group">
         <input type="submit" value="Update" class="btn btn-primary" />
+        <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+
     </div>
 </form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>

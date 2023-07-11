@@ -7,26 +7,7 @@ namespace Shipping_System.Seeds
 {
     public static class DefaultUsers
     {
-        public static async Task SeedBasicUserAsync(UserManager<ApplicationUser> userManager)
-        {
-            var defaultUser = new ApplicationUser
-            {
-                UserName = "basicuser@domain.com",
-                Email = "basicuser@domain.com",
-                EmailConfirmed = true,
-                Name ="Basic User",
-                Address = "Cairo",
-                BranchId = 1,
-            };
 
-            var user = await userManager.FindByEmailAsync(defaultUser.Email);
-
-            if (user == null)
-            {
-                await userManager.CreateAsync(defaultUser, "P@ssword123");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Basic.ToString());
-            }
-        }
 
         public static async Task SeedSuperAdminUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManger)
         {

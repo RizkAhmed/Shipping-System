@@ -3,21 +3,57 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@ViewBag.GovName</h1>
 
-<table class="table table-bordered table-hover">
-    <tr>
-        <th>City Name</th>
-        <th>Shipping Cost</th>
-        <th>Pickup Cost</th>
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name </td>
-            <td>@item.ShippingCost</td>
-            <td>@item.PickUpCost</td>
-        </tr>
-    }
-</table>
-<a asp-action="Index" class="btn btn-primary"> Back </a>
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>@ViewBag.GovName</h2>
+        <div class="container my-2">
+            <div class="row justify-content-between">
+                <div>
+                    <h6 class="mt-2"><i class="fa-solid fa-house"></i> ><a asp-action="Index" class="text-decoration-none">Governorate</a> > @ViewBag.GovName > <b><a href="#" class="text-decoration-none"> Cities</a></b></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card shadow mb-0 text-center">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>City Name</th>
+                            <th>Shipping Cost</th>
+                            <th>Pickup Cost</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name </td>
+                                <td>@item.ShippingCost</td>
+                                <td>@item.PickUpCost</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+<div class="row">
+    <a asp-action="Index" class="btn btn-primary">Back</a>
+</div>
+</div>
+
+
+
+
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/js/demo/datatables-demo.js"></script>

@@ -6,6 +6,7 @@ using Shipping_System.Constants;
 using Shipping_System.Models;
 using Shipping_System.ViewModels;
 using System.Security.Claims;
+using static Shipping_System.Constants.Permissions;
 
 namespace Shipping_System.Controllers
 {
@@ -18,19 +19,46 @@ namespace Shipping_System.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        //[Authorize(Permissions.Roles.View)]
+        //public IActionResult Index(string word)
+        //{
+        //    List<IdentityRole> roles;
+        //    if (string.IsNullOrEmpty(word))
+        //    {
+        //        roles = _roleManager.Roles.ToList().Where(r=>r.Name!= "Representative"&& r.Name != "Trader").ToList();
+        //    }
+        //    else
+        //    {
+        //        roles = _roleManager.Roles
+        //            .Where(e => e.Name.ToLower().Contains(word.ToLower()))
+        //            .Where(r => r.Name != "Representative" && r.Name != "Trader").ToList();
+        //    }
+
+        //    return View(roles);
+        //}
+
+
         [Authorize(Permissions.Roles.View)]
         public IActionResult Index(string word)
         {
             List<IdentityRole> roles;
             if (string.IsNullOrEmpty(word))
             {
-                roles = _roleManager.Roles.ToList().Where(r=>r.Name!= "Representative"&& r.Name != "Trader").ToList();
+                roles = _roleManager.Roles.ToList().Where(r => r.Name != "Representative" && r.Name != "Trader").ToList();
             }
             else
             {
                 roles = _roleManager.Roles
                     .Where(e => e.Name.ToLower().Contains(word.ToLower()))
                     .Where(r => r.Name != "Representative" && r.Name != "Trader").ToList();
+            }
+
+            // Move the SuperAdmin role to the first position in the list
+            var superAdminRole = roles.SingleOrDefault(r => r.Name == "SuperAdmin");
+            if (superAdminRole != null)
+            {
+                roles.Remove(superAdminRole);
+                roles.Insert(0, superAdminRole);
             }
 
             return View(roles);
@@ -40,20 +68,32 @@ namespace Shipping_System.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(RoleFormViewModel model)
-        {
+        {            
+            var roles = _roleManager.Roles.ToList().Where(r => r.Name != "Representative" && r.Name != "Trader").ToList();
+            var superAdminRole = roles.SingleOrDefault(r => r.Name == "SuperAdmin");
+            if (superAdminRole != null)
+            {
+                roles.Remove(superAdminRole);
+                roles.Insert(0, superAdminRole);
+            }
+
+
             if (!ModelState.IsValid)
-                return View("Index", await _roleManager.Roles.ToListAsync());
+                return View("Index", roles);
+
 
             if (await _roleManager.RoleExistsAsync(model.Name))
             {
                 ModelState.AddModelError("Name", "Role is exists!");
-                return View("Index", await _roleManager.Roles.ToListAsync());
-            }
+                    return View("Index", roles);
+
+                }
 
             await _roleManager.CreateAsync(new IdentityRole(model.Name.Trim()));
 
             return RedirectToAction(nameof(Index));
         }
+
         [Authorize(Permissions.Roles.Edit)]
         public async Task<IActionResult> ManagePermissions(string roleId)
         {

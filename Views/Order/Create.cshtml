@@ -30,7 +30,7 @@
         <div class="col-4">
             <label asp-for="OrderTypeId" class="control-label"></label>
         <select class="form-control" asp-for="OrderTypeId" asp-items="orderTypes">
-            <option value="0">----- Select Order Type-------</option>
+            <option value="0">-- Select Order Type --</option>
         </select>
         <span asp-validation-for="OrderTypeId" class="text-danger"></span>
         </div>
@@ -66,7 +66,7 @@
             <div class="form-group mr-3">
                 <label asp-for="ClientGovernorateId" class="control-label"></label>
                 <select id="ClientGovernorateId" class="form-control" asp-for="ClientGovernorateId" asp-items="governorate" onchange="getCitesInGovernrate()">
-                    <option value="0">----- Select Client Governorate Type-------</option>
+                    <option value="0">-- Select Client Governorate --</option>
                 </select>
                 <span asp-validation-for="ClientGovernorateId" class="text-danger"></span>
             </div>
@@ -75,7 +75,7 @@
             <div class="form-group mr-3">
                 <label asp-for="ClientCityId" class="control-label"></label>
                 <select id="ClientCityId"  class="form-control" asp-for="ClientCityId">
-                    <option value="0">----- Select Client City Type-------</option>
+                    <option value="0">-- Select Client City --</option>
                 </select>
                 <span asp-validation-for="ClientCityId" class="text-danger"></span>
             </div>
@@ -247,7 +247,7 @@
             <div class="form-group mr-5">
                 <label asp-for="DeliveryTypeId" class="control-label"></label>
                 <select class="form-control" asp-for="DeliveryTypeId" asp-items="deliverTypes">
-                    <option value="0">----- Select Deliver Type-------</option>
+                    <option value="0">-- Select Deliver Type --</option>
                 </select>
                 <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
             </div>
@@ -255,7 +255,7 @@
             <div class="form-group mr-5">
                 <label asp-for="PaymentMethodId" class="control-label"></label>
                 <select class="form-control" asp-for="PaymentMethodId" asp-items="paymentMethods">
-                    <option value="0">----- Select Payment Method-------</option>
+                    <option value="0">-- Select Payment Method --</option>
                 </select>
                 <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
             </div>
@@ -263,7 +263,7 @@
             <div class="form-group mr-5">
                 <label asp-for="BranchId" class="control-label"></label>
                 <select class="form-control" asp-for="BranchId" asp-items="branches">
-                    <option value="0">----- Select Branch-------</option>
+                    <option value="0">-- Select Branch --</option>
                 </select>
                 <span asp-validation-for="BranchId" class="text-danger"></span>
             </div>
@@ -296,7 +296,7 @@
             </div>
             <div>
                 <label></label>
-                <a onclick="AddProduct('@OrderNo')" class="btn btn-success form-control">Add Product</a>
+                <a onclick="AddProduct('@OrderNo')" class="btn btn-success form-control mt-2">Add Product</a>
             </div>
         </span>
         <br />
