@@ -60,9 +60,12 @@
 @section Scripts {
     <script>
         function Rename(Rid) {
+
+
             var nameField = document.getElementById("name_" + Rid)
             bootbox.prompt({
                 title: 'Please Enter New Name',
+                value: nameField.innerText,
                 centerVertical: true,
                 callback: function (result) {
                     $.ajax({

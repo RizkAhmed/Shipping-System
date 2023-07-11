@@ -132,7 +132,7 @@ namespace Shipping_System.Areas.Identity.Pages.Account
                     if (_userManager.IsInRoleAsync(user, Roles.Trader.ToString()).Result)
                         return RedirectToAction("Home", "Traders");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Home", "Employees");
                 }
                 //if(user.IsDeleted)
                 //{
