@@ -54,7 +54,7 @@ namespace Shipping_System.Controllers
             return View(traders);
         }
 
-        [Authorize(Permissions.Traders.Create)]
+        [Authorize(Permissions.Users.Create)]
         public async Task<IActionResult> Create()
         {
             var trader = new TraderAndUserViewModel

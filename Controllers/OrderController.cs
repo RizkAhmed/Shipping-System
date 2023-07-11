@@ -252,7 +252,7 @@ namespace Shipping_System.Controllers
             ViewData["RepresentativesInSameCity"] = viewmodels;
             return View(order);
         }
-        [Authorize(Permissions.Orderes.Edit)]
+        [Authorize(Permissions.Orderes.View)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Status(Order order)
@@ -265,7 +265,7 @@ namespace Shipping_System.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Permissions.Orderes.Edit)]
+        [Authorize(Permissions.Orderes.View)]
         public IActionResult LinkOrderToRepresentative(string orderId, string repId)
         {
             var order = _orderRepository.GetById(int.Parse(orderId));
