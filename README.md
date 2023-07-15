@@ -1,4 +1,4 @@
-# Shipping System Project
+# Shipping System
 
 This project is an ASP.NET Core 7 MVC web application that simplifies order creation, tracking, and delivery management for traders, streamlines administrative tasks and enhances operational efficiency for employees, and provides easy access to assigned tasks and real-time updates for representatives. The system is designed for shipping companies to address pain points such as manual processes, lack of coordination, and time-consuming tasks.
 
