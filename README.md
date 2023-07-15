@@ -35,6 +35,3 @@ This system is built using the following technologies:
 
 We welcome contributions to this project. To contribute, please fork this repository, make your changes, and submit a pull request.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
