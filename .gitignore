@@ -4,6 +4,12 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
+
+1-Presentation/
+2-Database Backup/
+3- Final Project Screenshots/
+4- Final Project Video/
+
 Data/Migrations/
 *.rsuser
 *.suo
